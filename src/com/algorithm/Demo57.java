@@ -1,7 +1,6 @@
 package com.algorithm;
 
-import apple.laf.JRSUIUtils;
-import com.algorithm.aux.TreeLinkNode;
+import com.algorithm.auxiliary.TreeLinkNode;
 
 /**
  * 二叉树的下一个节点

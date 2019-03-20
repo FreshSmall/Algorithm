@@ -1,8 +1,7 @@
 package com.algorithm.basis;
 
-import com.algorithm.aux.TreeNode;
+import com.algorithm.auxiliary.TreeNode;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Stack;
 

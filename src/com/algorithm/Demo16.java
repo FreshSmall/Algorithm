@@ -1,6 +1,6 @@
 package com.algorithm;
 
-import com.algorithm.aux.ListNode;
+import com.algorithm.auxiliary.ListNode;
 
 /**
  * 合并两个排序的链表

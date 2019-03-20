@@ -1,6 +1,6 @@
 package com.algorithm;
 
-import com.algorithm.aux.TreeNode;
+import com.algorithm.auxiliary.TreeNode;
 
 /**
  * 给定一个二叉搜索树，找出其中最小的节点

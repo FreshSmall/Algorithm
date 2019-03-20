@@ -1,6 +1,6 @@
 package com.algorithm;
 
-import com.algorithm.aux.TreeNode;
+import com.algorithm.auxiliary.TreeNode;
 
 import java.util.ArrayList;
 import java.util.Stack;

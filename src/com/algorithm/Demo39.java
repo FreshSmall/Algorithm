@@ -1,6 +1,6 @@
 package com.algorithm;
 
-import com.algorithm.aux.TreeNode;
+import com.algorithm.auxiliary.TreeNode;
 
 /**
  * 判断二叉树是否是平衡二叉树

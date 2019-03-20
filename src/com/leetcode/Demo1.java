@@ -1,6 +1,6 @@
 package com.leetcode;
 
-import com.algorithm.aux.TreeNode;
+import com.algorithm.auxiliary.TreeNode;
 
 /**
  * 查找树的最少路径

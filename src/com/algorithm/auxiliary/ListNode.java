@@ -1,4 +1,4 @@
-package com.algorithm.aux;
+package com.algorithm.auxiliary;
 
 public class ListNode {
     public int val;

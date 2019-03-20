@@ -1,6 +1,6 @@
 package com.algorithm;
 
-import com.algorithm.aux.TreeNode;
+import com.algorithm.auxiliary.TreeNode;
 
 /**
  * 求二叉树的深度

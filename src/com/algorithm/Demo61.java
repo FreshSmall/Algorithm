@@ -1,6 +1,6 @@
 package com.algorithm;
 
-import com.algorithm.aux.TreeNode;
+import com.algorithm.auxiliary.TreeNode;
 
 /**
  * 实现两个函数序列化和反序列二叉树

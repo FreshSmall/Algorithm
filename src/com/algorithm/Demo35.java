@@ -59,8 +59,8 @@ public class Demo35 {
 
         System.out.println(count%1000000007);
 
-//        for(int i = 0;i<aux.length;i++){
-//            System.out.println(aux[i]);
+//        for(int i = 0;i<auxiliary.length;i++){
+//            System.out.println(auxiliary[i]);
 //        }
 
 

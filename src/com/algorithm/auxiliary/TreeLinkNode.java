@@ -1,4 +1,4 @@
-package com.algorithm.aux;
+package com.algorithm.auxiliary;
 
 public class TreeLinkNode {
     public int val;
