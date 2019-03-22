@@ -29,8 +29,12 @@ public class CountDownLatchDemo {
 		}
 	}
 
+
+
 	public static void main(String[] args) {
 		new Thread(new BossThread()).start();
+
+
 
 		for (long i = 0; i < countDownLatch.getCount(); i++) {
 			new Thread(new EmplyeeThread()).start();
