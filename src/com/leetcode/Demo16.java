@@ -16,16 +16,22 @@ public class Demo16 {
         int sum = 0;
 
         for(int i=0;i<ratings.length-1;i++){
-            if(ratings[i]>ratings[i+1]){
-                nums[i]=nums[i]+1;
+            if(ratings[i]>ratings[i+1]&&nums[i]<=nums[i+1]){
+                nums[i]=nums[i+1]+1;
+            }else if(ratings[i]<ratings[i+1]&&nums[i]>=nums[i+1]){
+                nums[i+1] =nums[i]+1;
+            }
+
+        }
+
+        for(int i =ratings.length-1;i>0;i--){
+            if(ratings[i]>ratings[i-1]&&nums[i]<=nums[i-1]){
+                nums[i]=nums[i-1]+1;
+            }else if(ratings[i]<ratings[i-1]&&nums[i]>=nums[i-1]){
+                nums[i-1] =nums[i]+1;
             }
         }
 
-        for (int i=ratings.length-1;i>0;i--){
-            if(ratings[i]>ratings[i-1]&&nums[i]<=nums[i-1]){
-                nums[i] = nums[i-1]+1;
-            }
-        }
 
         for(int i=0;i<nums.length;i++){
             sum+=nums[i];
@@ -34,7 +40,7 @@ public class Demo16 {
     }
 
     public static void main(String[] args) {
-        int[] rating = {1,3,5};
+        int[] rating = {5,3,1};
         Demo16 d = new Demo16();
         System.out.println(d.candy(rating));
     }
