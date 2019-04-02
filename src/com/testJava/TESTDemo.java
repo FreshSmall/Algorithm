@@ -8,7 +8,7 @@ import java.lang.reflect.Method;
 public class TESTDemo {
 
     public static void main(String[] args) throws Exception {
-        Class<?> clazz = DemoClass.class;
+      /*  Class<?> clazz = DemoClass.class;
         DemoClass demoClass = (DemoClass) clazz.newInstance();
         Field[]  fields = clazz.getFields();
         Method methods = clazz.getMethod("setMess",String.class);
@@ -19,6 +19,11 @@ public class TESTDemo {
         System.out.println(DemoClass.mess);
 
         DemoClass dd = new DemoClass();
-        System.out.println(dd.getMess());
+        System.out.println(dd.getMess());*/
+
+        String pas = "66199558";
+        String password2 = MD5Utils.MD5Encode(pas,"utf8");
+        System.out.println(password2);
+
     }
 }
