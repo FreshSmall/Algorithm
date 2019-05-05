@@ -2,6 +2,8 @@ package com.algorithm;
 
 import com.algorithm.auxiliary.TreeNode;
 
+import java.util.Stack;
+
 /**
  * 重新创建二叉树
  * 通过前序和中序
@@ -37,6 +39,9 @@ public class Demo4 {
 
         TreeNode head = demo.reConstructBinaryTree(pre, in);
         System.out.println("ceshi");
+
+
+        Stack<Integer> stack = new Stack<Integer>();
 
 
     }

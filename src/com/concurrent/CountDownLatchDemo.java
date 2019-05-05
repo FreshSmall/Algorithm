@@ -2,6 +2,9 @@ package com.concurrent;
 
 import java.util.concurrent.CountDownLatch;
 
+/**
+ * Java并发包之CountDownLatch锁
+ */
 public class CountDownLatchDemo {
 
     private static CountDownLatch countDownLatch = new CountDownLatch(5);
