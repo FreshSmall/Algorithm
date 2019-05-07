@@ -61,6 +61,8 @@ public class Demo26 {
         return root;
     }
 
+
+
     public static void main(String[] args) {
         TreeNode t1 = new TreeNode(2);
         TreeNode t2 = new TreeNode(1);
@@ -68,5 +70,7 @@ public class Demo26 {
         t1.left = t2;
         t1.right = t3;
         Demo26 demo = new Demo26();
+        TreeNode root = demo.Convert2(t1);
+        System.out.println(root.val);
     }
 }
