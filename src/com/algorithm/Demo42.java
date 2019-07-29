@@ -49,10 +49,41 @@ public class Demo42 {
         return arrayList;
     }
 
+    public ArrayList<Integer> FindNumbersWithSum1(int [] array,int sum) {
+        ArrayList<Integer> list = new ArrayList<>();
+        if(array==null||array.length<2){
+            return list;
+        }
+        int small = array.length>>1;
+        int productNum = 0x7fffffff;
+        int big = small+1;
+        int curSum = array[small]+array[big];
+        while(small>=0||big<array.length-1){
+            if(curSum==sum){
+                int product = array[small]*array[big];
+                if(product<productNum){
+                    productNum=product;
+                    list.clear();
+                    list.add(array[small]);
+                    list.add(array[big]);
+                }
+                curSum-=array[big];
+                curSum+=array[++big];
+            }else if(curSum>sum){
+                curSum-=array[small];
+                curSum+=array[--small];
+            }else{
+                curSum-=array[big];
+                curSum+=array[++big];
+            }
+        }
+        return list;
+    }
+
     public static void main(String[] args) {
         Demo42 d = new Demo42();
-        int[] a={1,2,4,7,11,15};
-        ArrayList<Integer> arrayList = d.FindNumbersWithSum(a,15);
+        int[] a={1,2,4,7,11,16};
+        ArrayList<Integer> arrayList = d.FindNumbersWithSum1(a,17);
         System.out.println(arrayList.size());
     }
 }

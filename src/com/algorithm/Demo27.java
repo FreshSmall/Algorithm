@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * 字符串全排列
+ */
 public class Demo27 {
 
     public ArrayList<String> Permutation(String str) {
@@ -29,7 +32,7 @@ public class Demo27 {
     public static void main(String[] args) {
         Set<String> set = new HashSet<String>();
         ArrayList<String> arrarList = new ArrayList<String>();
-        String str = "abcd";
+        String str = "a";
         char temp;
         for(int i=0;i<str.length();i++){
             char[] chars = str.toCharArray();

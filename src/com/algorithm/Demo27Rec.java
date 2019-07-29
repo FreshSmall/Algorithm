@@ -9,6 +9,7 @@ public class Demo27Rec {
     public ArrayList<String> Permutation(String str) {
         ArrayList<String> arrarList = new ArrayList<String>();
         HashSet<String> set = new HashSet<String>();
+
         Permutation(str.toCharArray(),0,set);
         return new ArrayList(set);
     }
@@ -36,7 +37,7 @@ public class Demo27Rec {
 
 
     public static void main(String[] args) {
-        String str = "a";
+        String str = "aab";
         char[] chars = str.toCharArray();
         int from = 0;
         int to = chars.length-1;
