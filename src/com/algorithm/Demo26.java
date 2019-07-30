@@ -56,7 +56,7 @@ public class Demo26 {
 
     public TreeNode Convert2(TreeNode pRootOfTree){
         TreeNode pre = null;
-        TreeNode root = null;
+        TreeNode root = new TreeNode(4);
         Convert1(pRootOfTree,pre,root);
         return root;
     }
@@ -72,5 +72,7 @@ public class Demo26 {
         Demo26 demo = new Demo26();
         TreeNode root = demo.Convert2(t1);
         System.out.println(root.val);
+
+
     }
 }

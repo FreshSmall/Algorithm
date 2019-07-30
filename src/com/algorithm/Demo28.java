@@ -1,7 +1,7 @@
 package com.algorithm;
 
 /**
- * 数组中出现超过一般次数的数字
+ * 数组中出现超过一半次数的数字
  */
 public class Demo28 {
 

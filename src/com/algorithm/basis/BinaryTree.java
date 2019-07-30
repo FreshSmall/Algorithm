@@ -129,25 +129,23 @@ public class BinaryTree {
         t2.right = t5;
         t3.left = t6;
         t3.right = t7;
-        BinaryTree bt = new BinaryTree();
-        /*bt.befScan(t1);
-        System.out.println("==========");
-        bt.inScan(t1);
-        System.out.println("==========");
-        bt.lasScan(t1);*/
-//        bt.befScanRec(t1);
-//        bt.inScanRec(t1);
-//        bt.lasScanRec(t1);
-        LinkedList<TreeNode> list = new LinkedList<>();
-        list.add(t1);
-        while (!list.isEmpty()) {
-            TreeNode temp = list.poll();
-            System.out.println(temp.val);
-            if (temp.left!=null) {
-                list.add(temp.left);
-            }
-            if (temp.right!=null) {
-                list.add(temp.right);
+        Stack<TreeNode> stack = new Stack<TreeNode>();
+        stack.add(t1);
+        TreeNode pre = null;
+        while(!stack.isEmpty()){
+            TreeNode temp = stack.peek();
+            if((temp.left==null&&temp.right==null)||(pre == temp.left||pre == temp.right)){
+                temp = stack.pop();
+                System.out.println(temp.val);
+                pre = temp;
+            }else{
+                if (temp.right!=null) {
+                    stack.add(temp.right);
+                }
+
+                if (temp.left!=null) {
+                    stack.add(temp.left);
+                }
             }
         }
     }

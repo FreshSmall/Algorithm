@@ -3,6 +3,9 @@ package com.algorithm;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+/**
+ * 字符串的全排列
+ */
 public class Demo27Rec {
 
 
