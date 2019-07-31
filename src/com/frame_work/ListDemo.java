@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class ListDemo {
@@ -17,6 +18,19 @@ public class ListDemo {
             System.out.println(iterator.next());
         }
     }
+
+    public void testCopyOnWriteArrayList(){
+        CopyOnWriteArrayList<Integer> cwal = new CopyOnWriteArrayList<>();
+        cwal.add(1);
+        cwal.add(2);
+        cwal.add(3);
+        cwal.addIfAbsent(2);
+        Iterator<Integer> iterator = cwal.iterator();
+        while(iterator.hasNext()){
+            System.out.println(iterator.next());
+        }
+    }
+
 
     public void testToArray(){
         List<String> str1 = new ArrayList<String>();
@@ -89,6 +103,7 @@ public class ListDemo {
 
     public static void main(String[] args) {
         ListDemo listDemo = new ListDemo();
+        listDemo.testCopyOnWriteArrayList();
     }
 
 
