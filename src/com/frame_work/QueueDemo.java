@@ -56,6 +56,16 @@ public class QueueDemo {
 
 	public void testSynchronousQueue() throws Exception {
 		SynchronousQueue<Integer> sq = new SynchronousQueue<Integer>(false);
+		new Thread(()->{
+			while(sq.isEmpty()){
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				System.out.println(sq.poll());
+			}
+		}).start();
 		new Thread(() -> {
 			try {
 				sq.put(1);
@@ -65,8 +75,8 @@ public class QueueDemo {
 			}
 		}).start();
 
-		Thread.sleep(500);
-		System.out.println(sq.poll());
+
+
 	}
 
 
