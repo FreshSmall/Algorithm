@@ -51,25 +51,19 @@ public class QueueDemo {
         abq.offer(12, 10, TimeUnit.SECONDS);
     }
 
-    /**
-     *
-     */
-    public void testLinkBlockingQueue() throws InterruptedException {
-        LinkedBlockingQueue<Integer> lbd = new LinkedBlockingQueue<Integer>();
-        lbd.add(1);
-        lbd.add(2);
-        lbd.add(3);
-
-        lbd.take();
-        Iterator<Integer> iterator = lbd.iterator();
-        while (iterator.hasNext()){
-            System.out.println(iterator.next());
-        }
-    }
-
 
     public void testSynchronousQueue() throws Exception {
         SynchronousQueue<Integer> sq = new SynchronousQueue<Integer>(false);
+        new Thread(() -> {
+            while (sq.isEmpty()) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                System.out.println(sq.poll());
+            }
+        }).start();
         new Thread(() -> {
             try {
                 sq.put(1);
@@ -78,9 +72,32 @@ public class QueueDemo {
                 e.printStackTrace();
             }
         }).start();
-
         Thread.sleep(500);
         System.out.println(sq.poll());
+    }
+
+
+    public void testPriorityBlockingQueue(){
+        PriorityBlockingQueue<Integer> pbq = new PriorityBlockingQueue<Integer>();
+        pbq.add(1);
+        pbq.add(2);
+        pbq.add(3);
+        Iterator<Integer> iterator = pbq.iterator();
+        while(iterator.hasNext()){
+            System.out.println(iterator.next());
+        }
+    }
+
+    public void testLinkedTransferQueue() throws InterruptedException {
+        LinkedTransferQueue<Integer> ltfq = new LinkedTransferQueue<Integer>();
+        ltfq.add(1);
+        ltfq.add(2);
+        System.out.println(ltfq.take());
+        ltfq.add(3);
+        Iterator<Integer> iterator = ltfq.iterator();
+        while(iterator.hasNext()){
+           // System.out.println(iterator.next());
+        }
     }
 
 
@@ -88,10 +105,21 @@ public class QueueDemo {
         ConcurrentLinkedQueue<Integer> clq = new ConcurrentLinkedQueue<>();
         clq.add(1);
         clq.add(2);
+        System.out.println(clq.poll());
+        Iterator<Integer> iterator = clq.iterator();
+        while (iterator.hasNext()) {
+            System.out.println(iterator.next());
+        }
     }
+
+    public void testDelayQueue(){
+    }
+
+
+
 
     public static void main(String[] args) throws Exception {
         QueueDemo queueDemo = new QueueDemo();
-        queueDemo.testLinkBlockingQueue();
+        queueDemo.testConcurrentLinkedQueue();
     }
 }
