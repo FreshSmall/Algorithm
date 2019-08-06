@@ -1,6 +1,7 @@
 package com.frame_work;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentSkipListMap;
 
 public class MapDemo {
 
@@ -56,6 +57,26 @@ public class MapDemo {
         System.out.println(weakHashMap.toString());
     }
 
+
+    public void testConcurrentSkipListMap(){
+        ConcurrentSkipListMap<Integer,String> cslm = new ConcurrentSkipListMap<Integer,String>();
+        cslm.put(1,"1");
+        cslm.put(6,"6");
+        cslm.put(5,"5");
+        cslm.put(3,"3");
+        cslm.put(17,"17");
+        cslm.put(16,"17");
+        cslm.put(15,"17");
+        cslm.put(14,"17");
+        cslm.put(13,"17");
+        cslm.put(18,"17");
+        cslm.put(20,"17");
+        for(Map.Entry<Integer,String> entry:cslm.entrySet()){
+            System.out.print(entry.getKey()+"==");
+            System.out.println(entry.getValue());
+        }
+    }
+
     static final int hash(Object key) {
         int h;
         return (key == null) ? 0 : (h = key.hashCode()) ^ (h >>> 16);
@@ -63,8 +84,7 @@ public class MapDemo {
 
     public static void main(String[] args) {
         MapDemo mapDemo = new MapDemo();
-        mapDemo.testWeakHashMap();
-
+        mapDemo.testConcurrentSkipListMap();
     }
 
     class LRU<K,V> extends LinkedHashMap<K,V>{

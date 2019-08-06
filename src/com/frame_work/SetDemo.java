@@ -56,14 +56,13 @@ public class SetDemo {
         ConcurrentSkipListSet<Integer> csls = new ConcurrentSkipListSet<>();
         csls.add(1);
         csls.add(2);
+        csls.add(4);
         csls.add(3);
         Iterator<Integer> iterator = csls.iterator();
         while (iterator.hasNext()) {
             System.out.println(iterator.next());
         }
-        outer: for (;;) {
 
-        }
     }
 
     public static void main(String[] args) {

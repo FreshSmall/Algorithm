@@ -14,6 +14,7 @@ public class ConcurrentHashMapDemo {
             System.out.print(entry.getKey()+"===");
             System.out.println(entry.getValue());
         }
+        map.size();
     }
 
 
