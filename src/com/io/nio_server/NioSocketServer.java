@@ -50,6 +50,11 @@ public class NioSocketServer {
                         ServerSocketChannel serverSocketChannel = (ServerSocketChannel) selectableChannel;
                         SocketChannel socketChannel = serverSocketChannel.accept();
                         registerSocketChannel(socketChannel, selector);
+                    }else if(readyKey.isValid()&&readyKey.isConnectable()){
+                        System.out.println("============socket channel建立连接===========");
+                    }else if(readyKey.isValid()&&readyKey.isReadable()){
+                        System.out.println("============socket channel数据准备好，可以去读取======================");
+                        readSocketChannel(readyKey);
                     }
 
 
