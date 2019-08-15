@@ -4,8 +4,21 @@ package com.io.io_operation;
 import java.io.*;
 
 public class IoDemo {
-    private static String sourcepath = "E:/binlog.000018";
+    //    private static String sourcepath = "E:/binlog.000018";
+    private String sourcepath = this.getClass().getResource("").getPath();
     private static String targetpath = "E:/copybinlog.000018";
+
+
+    /**
+     * 测试Java文件类的相关问题
+     */
+    public void testFile() {
+        File file = new File(sourcepath);
+        File[] strings = file.listFiles();
+        for (int i = 0; i < strings.length; i++) {
+            System.out.println(strings[i]);
+        }
+    }
 
     /**
      * 测试输入流，读取文本的内容输出
@@ -31,8 +44,8 @@ public class IoDemo {
     public void testBufferedInputStream() throws Exception {
         InputStream inputStream = new FileInputStream(sourcepath);
         BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-        int data  =0;
-        while((data = bufferedInputStream.read())!=-1){
+        int data = 0;
+        while ((data = bufferedInputStream.read()) != -1) {
 
         }
         bufferedInputStream.close();
@@ -130,28 +143,28 @@ public class IoDemo {
     /**
      * 允许将内存的缓冲区当做InputStream使用
      */
-    public void testByteArrayInputStream(){
+    public void testByteArrayInputStream() {
 
     }
 
     /**
      * 将String转换成InputStream
      */
-    public void testStringBufferInputStream(){
+    public void testStringBufferInputStream() {
 
     }
 
     /**
      * 产生用于写入相关PipedOutputStream的数据。实现"管道化"概念
      */
-    public void testPipedInputStream(){
+    public void testPipedInputStream() {
 
     }
 
     /**
      * 将两个或多个InputStream对象转换成单一InputStream
      */
-    public void testSequenceInputStream(){
+    public void testSequenceInputStream() {
 
     }
 
@@ -159,7 +172,7 @@ public class IoDemo {
      * 抽象类，作为"装饰器"的接口。其中"装饰器"为其他的
      * InputStream类提供有用功能
      */
-    public void testFilterInputStream(){
+    public void testFilterInputStream() {
 
     }
 
@@ -167,31 +180,32 @@ public class IoDemo {
     /**
      * 在内存中创建缓冲区，所有送往"流"的数据都要放置在次缓冲区
      */
-    public void testByteArrayOutputStream(){
+    public void testByteArrayOutputStream() {
 
     }
 
     /**
      * 任何写入其中的信息都会自动作为相关PipedInputStream的输出，实现"管道化"概念
      */
-    public void testPipedOutputStream(){
+    public void testPipedOutputStream() {
 
     }
 
     /**
      * 抽象类，作为"装饰器"的接口，其中，"装饰器"为其他OutputStream提供有用功能
      */
-    public void testFilterOutputStream(){
+    public void testFilterOutputStream() {
 
     }
 
 
     public static void main(String[] args) throws Exception {
         IoDemo ioDemo = new IoDemo();
-        long start = System.currentTimeMillis();
+        /*long start = System.currentTimeMillis();
         ioDemo.testInputStream();
         long end = System.currentTimeMillis();
-        System.out.println("花费时间:"+(end-start));
+        System.out.println("花费时间:"+(end-start));*/
+        ioDemo.testFile();
 
 
         /*long start1 = System.currentTimeMillis();
