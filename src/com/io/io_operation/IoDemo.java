@@ -4,6 +4,8 @@ package com.io.io_operation;
 import java.io.*;
 
 public class IoDemo {
+    private static String sourcepath = "E:/binlog.000018";
+    private static String targetpath = "E:/copybinlog.000018";
 
     /**
      * 测试输入流，读取文本的内容输出
@@ -12,21 +14,29 @@ public class IoDemo {
      * @throws Exception
      */
     public void testInputStream() throws Exception {
-        InputStream inputStream = new FileInputStream("D:/test.txt");
-        int data = 0;
-        byte[] bytes = new byte[10];
-        StringBuffer sb = new StringBuffer();
-        while ((data = inputStream.read(bytes)) != -1) {
-            sb.append(new String(bytes, "utf-8"));
+        InputStream inputStream = new FileInputStream(sourcepath);
+        File file = new File(targetpath);
+        if (!file.exists()) {
+            file.createNewFile();
         }
-        System.out.println(sb.toString());
+        OutputStream outputStream = new FileOutputStream(file);
+        int data = 0;
+        byte[] bytes = new byte[1024];
+        while ((data = inputStream.read(bytes)) != -1) {
+//            outputStream.write(bytes,0,data);
+        }
         inputStream.close();
     }
 
-    public void testInputBufferStream() throws Exception {
-        InputStream inputStream = new FileInputStream("D:/test.txt");
+    public void testBufferedInputStream() throws Exception {
+        InputStream inputStream = new FileInputStream(sourcepath);
         BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+        int data  =0;
+        while((data = bufferedInputStream.read())!=-1){
 
+        }
+        bufferedInputStream.close();
+        inputStream.close();
     }
 
     /**
@@ -36,7 +46,7 @@ public class IoDemo {
      */
     public void testRead() throws Exception {
         char[] chars = new char[10];
-        FileReader reader = new FileReader("D:/test.txt");
+        FileReader reader = new FileReader(sourcepath);
         int data = 0;
         StringBuffer sb = new StringBuffer();
 		/*while((data = reader.read(chars))!=-1){
@@ -55,7 +65,7 @@ public class IoDemo {
      * @throws Exception
      */
     public void testBufferReader() throws Exception {
-        FileReader reader = new FileReader("D:/test.txt");
+        FileReader reader = new FileReader(sourcepath);
         BufferedReader bufferedReader = new BufferedReader(reader);
         String data = null;
         while ((data = bufferedReader.readLine()) != null) {
@@ -71,7 +81,7 @@ public class IoDemo {
      * @throws Exception
      */
     public void testOutputStream() throws Exception {
-        OutputStream outputStream = new FileOutputStream("D:/test.txt");
+        OutputStream outputStream = new FileOutputStream(sourcepath);
         String text = "测试文本输出";
         outputStream.write(text.getBytes());
         outputStream.close();
@@ -83,7 +93,7 @@ public class IoDemo {
      * @throws IOException
      */
     public void testWriter() throws IOException {
-        FileWriter writer = new FileWriter("D:/test.txt");
+        FileWriter writer = new FileWriter(sourcepath);
         String text = "测试文本writer输出";
         writer.write(text);
         writer.write("完毕");
@@ -96,7 +106,7 @@ public class IoDemo {
      * @throws FileNotFoundException
      */
     public void testInputStreamReader() throws Exception {
-        Reader reader = new InputStreamReader(new FileInputStream("D:/test.txt"));
+        Reader reader = new InputStreamReader(new FileInputStream(sourcepath));
         int data = 0;
         while ((data = reader.read()) != -1) {
             System.out.print((char) data);
@@ -110,7 +120,7 @@ public class IoDemo {
      * @throws Exception
      */
     public void testOutputStreamWriter() throws Exception {
-        Writer writer = new OutputStreamWriter(new FileOutputStream("D:/test.txt"));
+        Writer writer = new OutputStreamWriter(new FileOutputStream(sourcepath));
         String text = "测试文本流输出";
         writer.write(text);
         writer.write("完毕");
@@ -178,7 +188,16 @@ public class IoDemo {
 
     public static void main(String[] args) throws Exception {
         IoDemo ioDemo = new IoDemo();
-        ioDemo.testRead();
+        long start = System.currentTimeMillis();
+        ioDemo.testInputStream();
+        long end = System.currentTimeMillis();
+        System.out.println("花费时间:"+(end-start));
+
+
+        /*long start1 = System.currentTimeMillis();
+        ioDemo.testBufferedInputStream();
+        long end1 = System.currentTimeMillis();
+        System.out.println("Buffered花费时间:"+(end1-start1));*/
     }
 
 }
