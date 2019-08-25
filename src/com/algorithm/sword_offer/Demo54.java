@@ -10,7 +10,7 @@ public class Demo54 {
     public void Insert(char ch)
     {
         if(chars[ch]==0){
-            chars[ch]= index++;
+            chars[ch]= ++index;
         }else{
             chars[ch]=-1;
         }
@@ -20,9 +20,9 @@ public class Demo54 {
     {
         char str = '#';
         int temp = Integer.MAX_VALUE;
-        for(int i =0;i<chars.length;i++){
+        for(int i =0;i<256;i++){
             if(chars[i]>0&&chars[i]<temp){
-                str = (char)(i-48);
+                str = (char)i;
                 temp = chars[i];
             }
         }
@@ -30,6 +30,8 @@ public class Demo54 {
     }
 
     public static void main(String[] args) {
-        System.out.println();
+        Demo54 d = new Demo54();
+        d.Insert('g');
+        System.out.println(d.FirstAppearingOnce());
     }
 }
