@@ -15,12 +15,6 @@ public class IoDemo {
     public void testFile() {
         File file = new File(sourcepath);
         File[] strings = file.listFiles();
-        file.listFiles(new FileFilter() {
-            @Override
-            public boolean accept(File pathname) {
-                return false;
-            }
-        });
         for (int i = 0; i < strings.length; i++) {
             System.out.println(strings[i]);
         }
@@ -150,7 +144,11 @@ public class IoDemo {
      * 允许将内存的缓冲区当做InputStream使用
      */
     public void testByteArrayInputStream() {
-
+        ByteArrayInputStream bais = new ByteArrayInputStream("测试ByteArrayInputStream".getBytes());
+        int data = 0;
+        while ((data = bais.read()) != -1) {
+            System.out.println(new String());
+        }
     }
 
     /**

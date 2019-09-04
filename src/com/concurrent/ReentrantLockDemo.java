@@ -35,6 +35,7 @@ public class ReentrantLockDemo {
 
 //			System.out.println("线程："+Thread.currentThread().getName()+"队列长度："+lock.getQueueLength());
 			lock.lock();
+			lock.tryLock();
 			for (int i = 0; i < 1000; i++) {
 				increntValue();
 			}
@@ -65,11 +66,16 @@ public class ReentrantLockDemo {
 
 
 	public static void main(String[] args) {
+		lock.lock();
+		for (int i = 0; i < 1000; i++) {
+			increntValue();
+		}
+		lock.unlock();
 
-		start = System.currentTimeMillis();
+		/*start = System.currentTimeMillis();
 
 		for (int i = 0; i < 3; i++) {
 			new Thread(new IncrementVauleThread()).start();
-		}
+		}*/
 	}
 }
