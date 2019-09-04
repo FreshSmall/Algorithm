@@ -76,12 +76,12 @@ public class Demo56 {
 
     public static void main(String[] args) {
         ListNode t1 = new ListNode(1);
-        ListNode t2 = new ListNode(1);
-        ListNode t3 = new ListNode(1);
-        ListNode t4 = new ListNode(1);
-        ListNode t5 = new ListNode(1);
-        ListNode t6 = new ListNode(1);
-        ListNode t7 = new ListNode(1);
+        ListNode t2 = new ListNode(2);
+        ListNode t3 = new ListNode(2);
+        ListNode t4 = new ListNode(3);
+        ListNode t5 = new ListNode(3);
+        ListNode t6 = new ListNode(4);
+        ListNode t7 = new ListNode(5);
         t1.next = t2;
         t2.next = t3;
         t3.next = t4;
@@ -90,7 +90,7 @@ public class Demo56 {
         t6.next = t7;
 
         Demo56 d = new Demo56();
-        ListNode pp = d.deleteDuplication(t1);
+        ListNode pp = d.deleteDuplication1(t1);
 
         while (pp != null) {
             System.out.println(pp.val);

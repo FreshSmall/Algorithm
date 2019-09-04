@@ -15,6 +15,12 @@ public class IoDemo {
     public void testFile() {
         File file = new File(sourcepath);
         File[] strings = file.listFiles();
+        file.listFiles(new FileFilter() {
+            @Override
+            public boolean accept(File pathname) {
+                return false;
+            }
+        });
         for (int i = 0; i < strings.length; i++) {
             System.out.println(strings[i]);
         }
