@@ -6,16 +6,16 @@ package com.algorithm.sword_offer;
  */
 public class Demo53 {
 
-	public boolean isNumeric(char[] str) {
-		String s = new String(str);
-		String pattren = "[+-]?[0-9]*(\\.[0-9]*)?([eE][+-]?[0-9]+)?";
-		return s.matches(pattren);
-	}
+    public boolean isNumeric(char[] str) {
+        String s = new String(str);
+        String pattren = "[+-]?[0-9]*(\\.[0-9]*)?([eE][+-]?[0-9]+)?";
+        return s.matches(pattren);
+    }
 
-	public static void main(String[] args) {
-		Demo53 d = new Demo53();
-		char[] str = {'1','2','3'};
-		System.out.println(d.isNumeric(str));
+    public static void main(String[] args) {
+        Demo53 d = new Demo53();
+        char[] str = {'1', '2', '3'};
+        System.out.println(d.isNumeric(str));
 
-	}
+    }
 }
