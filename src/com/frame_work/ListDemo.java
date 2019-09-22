@@ -84,12 +84,13 @@ public class ListDemo {
         System.out.println(objects.length);
     }
 
-    public void testSystemCopy(){
-        int[] a = new int[]{1,2,3,4,5};
+    public void testSystemCopy() {
+        int[] a = new int[]{1, 2, 3, 4, 5};
         int[] b = new int[a.length];
-        System.arraycopy(a,0,b,0,a.length);
+        System.arraycopy(a, 0, b, 0, a.length);
         System.out.println(b.length);
     }
+
 
     class myList extends ArrayList<String>{
 
