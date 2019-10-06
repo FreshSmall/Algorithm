@@ -10,8 +10,7 @@ public class InterruptDemo implements Runnable {
     @Override
     public void run() {
         while(true){
-            LockSupport.park();
-            if (Thread.currentThread().isInterrupted()) {
+            if (Thread.interrupted()) {
                 System.out.println("线程已经被中断！");
             }else{
                 System.out.println("线程正在处理中");
@@ -25,9 +24,8 @@ public class InterruptDemo implements Runnable {
         Thread t= new Thread(interruptDemo);
         t.start();
 
-        t.sleep(1000);
-
+//        t.sleep(1000);
+        System.out.println("kkkkkk"); 
         t.interrupt();
-
     }
 }
