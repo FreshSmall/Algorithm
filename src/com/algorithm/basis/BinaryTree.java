@@ -149,4 +149,19 @@ public class BinaryTree {
             }
         }
     }
+
+    public boolean isPalindrome(int x) {
+        String str = String.valueOf(x);
+        char[] strs = str.toCharArray();
+        int i = 0;
+        int j = str.length()-1;
+        while(i<=j){
+            if(strs[i]!=strs[j]){
+                return false;
+            }
+            i++;
+            j--;
+        }
+        return true;
+    }
 }

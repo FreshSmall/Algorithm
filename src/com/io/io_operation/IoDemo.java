@@ -10,7 +10,7 @@ public class IoDemo {
 
 
     /**
-     * ²âÊÔJavaÎÄ¼şÀàµÄÏà¹ØÎÊÌâ
+     * æµ‹è¯•Javaæ–‡ä»¶ç±»çš„ç›¸å…³é—®é¢˜
      */
     public void testFile() {
         File file = new File(sourcepath);
@@ -21,8 +21,8 @@ public class IoDemo {
     }
 
     /**
-     * ²âÊÔÊäÈëÁ÷£¬¶ÁÈ¡ÎÄ±¾µÄÄÚÈİÊä³ö
-     * ×Ö½ÚÁ÷
+     * æµ‹è¯•è¾“å…¥æµï¼Œè¯»å–æ–‡æœ¬çš„å†…å®¹è¾“å‡º
+     * å­—èŠ‚æµ
      *
      * @throws Exception
      */
@@ -53,7 +53,7 @@ public class IoDemo {
     }
 
     /**
-     * ²âÊÔÊäÈë£¬×Ö·û£¬¶ÁÈ¡ÎÄ±¾ÄÚÈİÊä³ö
+     * æµ‹è¯•è¾“å…¥ï¼Œå­—ç¬¦ï¼Œè¯»å–æ–‡æœ¬å†…å®¹è¾“å‡º
      *
      * @throws Exception
      */
@@ -73,7 +73,7 @@ public class IoDemo {
 
 
     /**
-     * ×Ö·û»º³åÊäÈëÁ÷
+     * å­—ç¬¦ç¼“å†²è¾“å…¥æµ
      *
      * @throws Exception
      */
@@ -89,32 +89,32 @@ public class IoDemo {
     }
 
     /**
-     * ²âÊÔÊä³öÁ÷£¬½«ÎÄ×ÖÊä³öµ½ÎÄ±¾ÖĞ
+     * æµ‹è¯•è¾“å‡ºæµï¼Œå°†æ–‡å­—è¾“å‡ºåˆ°æ–‡æœ¬ä¸­
      *
      * @throws Exception
      */
     public void testOutputStream() throws Exception {
         OutputStream outputStream = new FileOutputStream(sourcepath);
-        String text = "²âÊÔÎÄ±¾Êä³ö";
+        String text = "æµ‹è¯•æ–‡æœ¬è¾“å‡º";
         outputStream.write(text.getBytes());
         outputStream.close();
     }
 
     /**
-     * ²âÊÔÊä³öÁ÷£¨×Ö½Ú£©£¬½«ÎÄ×ÖÊä³öµ½ÎÄ±¾ÖĞ
+     * æµ‹è¯•è¾“å‡ºæµï¼ˆå­—èŠ‚ï¼‰ï¼Œå°†æ–‡å­—è¾“å‡ºåˆ°æ–‡æœ¬ä¸­
      *
      * @throws IOException
      */
     public void testWriter() throws IOException {
         FileWriter writer = new FileWriter(sourcepath);
-        String text = "²âÊÔÎÄ±¾writerÊä³ö";
+        String text = "æµ‹è¯•æ–‡æœ¬writerè¾“å‡º";
         writer.write(text);
-        writer.write("Íê±Ï");
+        writer.write("å®Œæ¯•");
         writer.close();
     }
 
     /**
-     * ²âÊÔ½«×Ö½ÚÁ÷°ü×°³É×Ö·ûÁ÷Êä³ö
+     * æµ‹è¯•å°†å­—èŠ‚æµåŒ…è£…æˆå­—ç¬¦æµè¾“å‡º
      *
      * @throws FileNotFoundException
      */
@@ -128,23 +128,23 @@ public class IoDemo {
     }
 
     /**
-     * ½«×Ö·ûÁ÷°ü×°³É×Ö½ÚÁ÷ÊäÈëµ½ÎÄ±¾
+     * å°†å­—ç¬¦æµåŒ…è£…æˆå­—èŠ‚æµè¾“å…¥åˆ°æ–‡æœ¬
      *
      * @throws Exception
      */
     public void testOutputStreamWriter() throws Exception {
         Writer writer = new OutputStreamWriter(new FileOutputStream(sourcepath));
-        String text = "²âÊÔÎÄ±¾Á÷Êä³ö";
+        String text = "æµ‹è¯•æ–‡æœ¬æµè¾“å‡º";
         writer.write(text);
-        writer.write("Íê±Ï");
+        writer.write("å®Œæ¯•");
         writer.close();
     }
 
     /**
-     * ÔÊĞí½«ÄÚ´æµÄ»º³åÇøµ±×öInputStreamÊ¹ÓÃ
+     * å…è®¸å°†å†…å­˜çš„ç¼“å†²åŒºå½“åšInputStreamä½¿ç”¨
      */
     public void testByteArrayInputStream() {
-        ByteArrayInputStream bais = new ByteArrayInputStream("²âÊÔByteArrayInputStream".getBytes());
+        ByteArrayInputStream bais = new ByteArrayInputStream("æµ‹è¯•ByteArrayInputStream".getBytes());
         int data = 0;
         while ((data = bais.read()) != -1) {
             System.out.println(new String());
@@ -152,29 +152,29 @@ public class IoDemo {
     }
 
     /**
-     * ½«String×ª»»³ÉInputStream
+     * å°†Stringè½¬æ¢æˆInputStream
      */
     public void testStringBufferInputStream() {
 
     }
 
     /**
-     * ²úÉúÓÃÓÚĞ´ÈëÏà¹ØPipedOutputStreamµÄÊı¾İ¡£ÊµÏÖ"¹ÜµÀ»¯"¸ÅÄî
+     * äº§ç”Ÿç”¨äºå†™å…¥ç›¸å…³PipedOutputStreamçš„æ•°æ®ã€‚å®ç°"ç®¡é“åŒ–"æ¦‚å¿µ
      */
     public void testPipedInputStream() {
 
     }
 
     /**
-     * ½«Á½¸ö»ò¶à¸öInputStream¶ÔÏó×ª»»³Éµ¥Ò»InputStream
+     * å°†ä¸¤ä¸ªæˆ–å¤šä¸ªInputStreamå¯¹è±¡è½¬æ¢æˆå•ä¸€InputStream
      */
     public void testSequenceInputStream() {
 
     }
 
     /**
-     * ³éÏóÀà£¬×÷Îª"×°ÊÎÆ÷"µÄ½Ó¿Ú¡£ÆäÖĞ"×°ÊÎÆ÷"ÎªÆäËûµÄ
-     * InputStreamÀàÌá¹©ÓĞÓÃ¹¦ÄÜ
+     * æŠ½è±¡ç±»ï¼Œä½œä¸º"è£…é¥°å™¨"çš„æ¥å£ã€‚å…¶ä¸­"è£…é¥°å™¨"ä¸ºå…¶ä»–çš„
+     * InputStreamç±»æä¾›æœ‰ç”¨åŠŸèƒ½
      */
     public void testFilterInputStream() {
 
@@ -182,21 +182,21 @@ public class IoDemo {
 
 
     /**
-     * ÔÚÄÚ´æÖĞ´´½¨»º³åÇø£¬ËùÓĞËÍÍù"Á÷"µÄÊı¾İ¶¼Òª·ÅÖÃÔÚ´Î»º³åÇø
+     * åœ¨å†…å­˜ä¸­åˆ›å»ºç¼“å†²åŒºï¼Œæ‰€æœ‰é€å¾€"æµ"çš„æ•°æ®éƒ½è¦æ”¾ç½®åœ¨æ¬¡ç¼“å†²åŒº
      */
     public void testByteArrayOutputStream() {
 
     }
 
     /**
-     * ÈÎºÎĞ´ÈëÆäÖĞµÄĞÅÏ¢¶¼»á×Ô¶¯×÷ÎªÏà¹ØPipedInputStreamµÄÊä³ö£¬ÊµÏÖ"¹ÜµÀ»¯"¸ÅÄî
+     * ä»»ä½•å†™å…¥å…¶ä¸­çš„ä¿¡æ¯éƒ½ä¼šè‡ªåŠ¨ä½œä¸ºç›¸å…³PipedInputStreamçš„è¾“å‡ºï¼Œå®ç°"ç®¡é“åŒ–"æ¦‚å¿µ
      */
     public void testPipedOutputStream() {
 
     }
 
     /**
-     * ³éÏóÀà£¬×÷Îª"×°ÊÎÆ÷"µÄ½Ó¿Ú£¬ÆäÖĞ£¬"×°ÊÎÆ÷"ÎªÆäËûOutputStreamÌá¹©ÓĞÓÃ¹¦ÄÜ
+     * æŠ½è±¡ç±»ï¼Œä½œä¸º"è£…é¥°å™¨"çš„æ¥å£ï¼Œå…¶ä¸­ï¼Œ"è£…é¥°å™¨"ä¸ºå…¶ä»–OutputStreamæä¾›æœ‰ç”¨åŠŸèƒ½
      */
     public void testFilterOutputStream() {
 
@@ -208,14 +208,14 @@ public class IoDemo {
         /*long start = System.currentTimeMillis();
         ioDemo.testInputStream();
         long end = System.currentTimeMillis();
-        System.out.println("»¨·ÑÊ±¼ä:"+(end-start));*/
+        System.out.println("èŠ±è´¹æ—¶é—´:"+(end-start));*/
         ioDemo.testFile();
 
 
         /*long start1 = System.currentTimeMillis();
         ioDemo.testBufferedInputStream();
         long end1 = System.currentTimeMillis();
-        System.out.println("Buffered»¨·ÑÊ±¼ä:"+(end1-start1));*/
+        System.out.println("BufferedèŠ±è´¹æ—¶é—´:"+(end1-start1));*/
     }
 
 }

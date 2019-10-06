@@ -44,7 +44,7 @@ public class CycliBarrierDemo {
     }
 
     public static void main(String[] args) throws InterruptedException {
-        cyclicBarrier = new CyclicBarrier(5, new Runnable() {
+        cyclicBarrier = new CyclicBarrier(3, new Runnable() {
             @Override
             public void run() {
                 System.out.println("所有线程开始干活了");
@@ -55,12 +55,11 @@ public class CycliBarrierDemo {
             new Thread(new CycliBarrierThread()).start();
         }
 
-        Thread t1 = new Thread(new InterruptThread());
+       /* Thread t1 = new Thread(new InterruptThread());
         t1.start();
 
-        TimeUnit.SECONDS.sleep(3);
+        TimeUnit.SECONDS.sleep(3);*/
 
-        t1.interrupt();
 
 
 

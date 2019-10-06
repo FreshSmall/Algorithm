@@ -37,7 +37,7 @@ public class CountDownLatchDemo {
         new Thread(new BossThread()).start();
 
 
-        for (long i = 0; i < countDownLatch.getCount(); i++) {
+        for (long i = 0; i < 5; i++) {
             new Thread(new EmplyeeThread()).start();
         }
     }
