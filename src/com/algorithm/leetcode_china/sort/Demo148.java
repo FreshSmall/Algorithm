@@ -1,4 +1,4 @@
-package com.algorithm.leetcode_china.linkedList;
+package com.algorithm.leetcode_china.sort;
 
 import com.algorithm.auxiliary.ListNode;
 
