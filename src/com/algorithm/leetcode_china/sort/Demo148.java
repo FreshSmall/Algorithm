@@ -10,6 +10,7 @@ public class Demo148 {
         if (head == null||head.next==null) {
             return head;
         }
+        //list分割
         ListNode fast = head;
         ListNode slow = head;
         while (slow != null && fast.next != null && fast.next.next != null) {
@@ -18,6 +19,8 @@ public class Demo148 {
         }
         ListNode temp = slow.next;
         slow.next = null;
+
+        //list合并
         ListNode left = sortList(head);
         ListNode right = sortList(temp);
         ListNode h = new ListNode(0);
@@ -32,7 +35,7 @@ public class Demo148 {
             }
             h = h.next;
         }
-        h.next = left == null ? left : right;
+        h.next = left == null ? right : left;
         return res.next;
     }
 
