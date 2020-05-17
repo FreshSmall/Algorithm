@@ -18,12 +18,18 @@ public class ShiMo {
         Arrays.sort(input, new Comparator<int[]>() {
             @Override
             public int compare(int[] x, int[] y) {
-                if (x[0] < y[0]) {
+                if (x[0] < y[0] && x[1] < y[1]) {
                     return -1;
-                } else if (x[0] > y[0]) {
+                } else if (x[0] > y[0] && x[1] > y[1]) {
                     return 1;
                 } else {
-                    return 0;
+                    if (x[1] < y[1]) {
+                        return -1;
+                    } else if (x[1] > y[1]) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
                 }
             }
         });
@@ -78,7 +84,6 @@ public class ShiMo {
                 {2, 1},
                 {2, 4},
                 {2, 5},
-                {4, 4},
                 {3, 2},
                 {3, 4},
                 {4, 5},
@@ -87,15 +92,16 @@ public class ShiMo {
                 {5, 3},
                 {6, 3},
                 {6, 4},
-                {6, 5}
+                {6, 5},
+                {4, 4}
 
         };
 
-        ShiMo t = new ShiMo();
-        t.polymerize(input);
+        ShiMo sm = new ShiMo();
+        sm.polymerize(input);
 
 
-        for(int[] integers : input){
+        for (int[] integers : input) {
             System.out.println(Arrays.toString(integers));
         }
 
