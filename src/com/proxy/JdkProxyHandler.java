@@ -9,11 +9,11 @@ import java.lang.reflect.Method;
  * @Author : yinchao
  * @create 2020/5/18 4:25 下午
  */
-public class ObjectProxyHandler implements InvocationHandler {
+public class JdkProxyHandler implements InvocationHandler {
 
     private Object target;
 
-    public ObjectProxyHandler(Object target) {
+    public JdkProxyHandler(Object target) {
         this.target = target;
     }
 
