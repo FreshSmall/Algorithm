@@ -106,7 +106,6 @@ public class NioSocketServer {
         int readLen = -1;
         try {
             readLen = clientSocketChannel.read(contextBuffer);
-
         } catch (Exception e) {
             //这里抛出了异常，一般就是客户端因为某种原因终止了，所以关闭了channel就行了
             e.printStackTrace();
