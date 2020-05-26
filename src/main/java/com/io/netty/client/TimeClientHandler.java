@@ -58,10 +58,6 @@ public class TimeClientHandler extends ChannelHandlerAdapter {
         buf.readBytes(req);
         String body = new String(req, "UTF-8");
         System.out.println("Now is:" + msg + ";the counter is :" + ++count);*/
-        List<Object> infos = (List<Object>) msg;
-        for (Object info : infos) {
-            System.out.println("The time server receive order:" + info.toString() + ";the counter is :" + ++count);
-        }
     }
 
     public void exception(ChannelHandlerContext ctx, Throwable cause) {

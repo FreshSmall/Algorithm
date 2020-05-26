@@ -1,7 +1,10 @@
-package com.io.netty.server;
+package com.io.netty.protobuf.server;
 
 import com.io.netty.messagepack.MsgpackDecoder;
 import com.io.netty.messagepack.MsgpackEncoder;
+import com.io.netty.protobuf.SubscribeReqProto;
+import com.io.netty.server.NettyTimeServer;
+import com.io.netty.server.TimeServerHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -10,18 +13,19 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
-import io.netty.handler.codec.LengthFieldPrepender;
+import io.netty.handler.codec.protobuf.ProtobufDecoder;
+import io.netty.handler.codec.protobuf.ProtobufEncoder;
+import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder;
+import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
 import io.netty.util.concurrent.DefaultThreadFactory;
 
 /**
  * Created by IntelliJ IDEA.
- * 通过netty框架创建TimeServer
- *
+ * Protobuf版本的图书订购服务端
  * @Author : yinchao
- * @create 2020/5/24 7:03 下午
+ * @create 2020/5/26 1:57 下午
  */
-public class NettyTimeServer {
+public class SubReqServer {
 
     public void bind(int port) {
         //配置服务端的NIO线程组
@@ -37,13 +41,11 @@ public class NettyTimeServer {
                     @Override
                     protected void initChannel(SocketChannel socketChannel) throws Exception {
                         System.out.println(Thread.currentThread().getName()+",服务器初始化通道.....");
-//        arg.pipeline().addLast(new LineBasedFrameDecoder(1024)); 换行分割符
-//        arg.pipeline().addLast(new DelimiterBasedFrameDecoder(1024,delimiter)); 特殊字符分割符
-//        arg.pipeline().addLast(new FixedLengthFrameDecoder(20)); 定长分隔符
-//        arg.pipeline().addLast(new StringDecoder());
-                        socketChannel.pipeline().addLast("msgpack decoder", new MsgpackDecoder());
-                        socketChannel.pipeline().addLast("msgpack encoder", new MsgpackEncoder());
-                        socketChannel.pipeline().addLast(new TimeServerHandler());
+                        socketChannel.pipeline().addLast(new ProtobufVarint32FrameDecoder());
+                        socketChannel.pipeline().addLast(new ProtobufDecoder(SubscribeReqProto.SubscribeReq.getDefaultInstance()));
+                        socketChannel.pipeline().addLast(new ProtobufVarint32LengthFieldPrepender());
+                        socketChannel.pipeline().addLast(new ProtobufEncoder());
+                        socketChannel.pipeline().addLast(new SubReqServerHandler());
                     }
                 });
 
@@ -64,6 +66,6 @@ public class NettyTimeServer {
 
     public static void main(String[] args) {
         int port = 8080;
-        new NettyTimeServer().bind(port);
+        new SubReqServer().bind(port);
     }
 }

@@ -1,10 +1,7 @@
-package com.io.netty.client;
+package com.io.netty.protobuf.client;
 
-import com.io.netty.messagepack.MsgpackDecoder;
-import com.io.netty.messagepack.MsgpackEncoder;
+import com.io.netty.protobuf.SubscribeRespProto;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -12,38 +9,34 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.codec.DelimiterBasedFrameDecoder;
-import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
-import io.netty.handler.codec.LengthFieldPrepender;
-import io.netty.handler.codec.LineBasedFrameDecoder;
-import io.netty.handler.codec.string.StringDecoder;
+import io.netty.handler.codec.protobuf.ProtobufDecoder;
+import io.netty.handler.codec.protobuf.ProtobufEncoder;
+import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder;
+import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
 import io.netty.util.concurrent.DefaultThreadFactory;
 
 /**
  * Created by IntelliJ IDEA.
- * Netty时间服务器客户端
+ * Protobuf 版本的图书订购客户端开发
  *
  * @Author : yinchao
- * @create 2020/5/24 9:22 下午
+ * @create 2020/5/26 2:07 下午
  */
-public class NettyTimeClient {
-
+public class SubReqClient {
     public void connect(int port, String host) {
         //配置客户端NIO线程组
         EventLoopGroup group = new NioEventLoopGroup(1, new DefaultThreadFactory("server3", true));
         Bootstrap b = new Bootstrap();
-        ByteBuf delimiter = Unpooled.copiedBuffer("$_".getBytes());
         b.group(group).channel(NioSocketChannel.class)
                 .option(ChannelOption.TCP_NODELAY, true)
                 .handler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(SocketChannel socketChannel) throws Exception {
-//                        socketChannel.pipeline().addLast(new LineBasedFrameDecoder(1024)); //换行符解码器
-//                        socketChannel.pipeline().addLast(new DelimiterBasedFrameDecoder(1024, delimiter));//特殊字符解码器
-//                        socketChannel.pipeline().addLast(new StringDecoder());
-                        socketChannel.pipeline().addLast("msgpack decoder", new MsgpackDecoder());
-                        socketChannel.pipeline().addLast("msgpack encoder", new MsgpackEncoder());
-                        socketChannel.pipeline().addLast(new TimeClientHandler());
+                        socketChannel.pipeline().addLast(new ProtobufVarint32FrameDecoder());
+                        socketChannel.pipeline().addLast(new ProtobufDecoder(SubscribeRespProto.SubscribeResp.getDefaultInstance()));
+                        socketChannel.pipeline().addLast(new ProtobufVarint32LengthFieldPrepender());
+                        socketChannel.pipeline().addLast(new ProtobufEncoder());
+                        socketChannel.pipeline().addLast(new SubReqClientHandler());
                     }
                 });
         try {
@@ -66,7 +59,7 @@ public class NettyTimeClient {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    new NettyTimeClient().connect(port, "localhost");
+                    new SubReqClient().connect(port, "localhost");
                 }
             }).start();
         }
