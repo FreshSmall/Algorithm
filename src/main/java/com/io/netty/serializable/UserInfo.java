@@ -1,5 +1,7 @@
 package com.io.netty.serializable;
 
+import org.msgpack.annotation.Message;
+
 import java.io.Serializable;
 import java.nio.ByteBuffer;
 
@@ -9,6 +11,7 @@ import java.nio.ByteBuffer;
  * @Author : yinchao
  * @create 2020/5/25 9:24 下午
  */
+@Message
 public class UserInfo implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -44,5 +47,13 @@ public class UserInfo implements Serializable {
         byte[] result = new byte[buffer.remaining()];
         buffer.get(result);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "UserInfo{" +
+                "userName='" + userName + '\'' +
+                ", userID=" + userID +
+                '}';
     }
 }

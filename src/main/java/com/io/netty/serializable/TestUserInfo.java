@@ -1,6 +1,8 @@
 package com.io.netty.serializable;
 
 
+import org.msgpack.MessagePack;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -23,15 +25,14 @@ public class TestUserInfo {
         os.writeObject(info);
         os.flush();
         os.close();
-
         byte[] b = bos.toByteArray();
-
         System.out.println("The jdk serializable length is:" + b.length);
         bos.close();
-
-        System.out.println("---------------------------------------");
-
         System.out.println("The byte array serializable length is:" + info.codeC().length);
+
+        MessagePack msgpack = new MessagePack();
+        byte[] raw = msgpack.write(info);
+        System.out.println("The MessagePack serializable length is:" + raw.length);
     }
 
 
@@ -59,10 +60,16 @@ public class TestUserInfo {
         for (int i = 0; i < loop; i++) {
             byte[] b = bos.toByteArray();
         }
-
-        System.out.println("---------------------------------------");
-
         System.out.println("The byte array serializable speed time is:" + (System.currentTimeMillis() - start) + "ms");
+
+        MessagePack msgpack = new MessagePack();
+        start = System.currentTimeMillis();
+        for (int i = 0; i < loop; i++) {
+            byte[] raw = msgpack.write(info);
+        }
+
+        System.out.println("The byte MessagePack speed time is:" + (System.currentTimeMillis() - start) + "ms");
+
     }
 
     public static void main(String[] args) throws IOException {

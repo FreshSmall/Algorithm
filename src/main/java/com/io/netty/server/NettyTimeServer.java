@@ -1,11 +1,17 @@
 package com.io.netty.server;
 
+import com.io.netty.messagepack.MsgpackDecoder;
+import com.io.netty.messagepack.MsgpackEncoder;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
+import io.netty.handler.codec.LengthFieldPrepender;
 import io.netty.util.concurrent.DefaultThreadFactory;
 
 /**
@@ -26,11 +32,27 @@ public class NettyTimeServer {
         b.group(boosGroup, workerGroup)
                 .channel(NioServerSocketChannel.class)
                 .option(ChannelOption.SO_BACKLOG, 1024)
-                .childHandler(new ChildChannelHandler());
+                .childHandler(new ChannelInitializer<SocketChannel>() {
+
+                    @Override
+                    protected void initChannel(SocketChannel socketChannel) throws Exception {
+                        System.out.println(Thread.currentThread().getName()+",服务器初始化通道.....");
+//        arg.pipeline().addLast(new LineBasedFrameDecoder(1024)); 换行分割符
+//        arg.pipeline().addLast(new DelimiterBasedFrameDecoder(1024,delimiter)); 特殊字符分割符
+//        arg.pipeline().addLast(new FixedLengthFrameDecoder(20)); 定长分隔符
+//        arg.pipeline().addLast(new StringDecoder());
+                        socketChannel.pipeline().addLast(new LengthFieldBasedFrameDecoder(65535,0,2,0,2));
+                        socketChannel.pipeline().addLast("msgpack decoder", new MsgpackDecoder());
+                        socketChannel.pipeline().addLast(new LengthFieldPrepender(2));
+                        socketChannel.pipeline().addLast("msgpack encoder", new MsgpackEncoder());
+                        socketChannel.pipeline().addLast(new TimeServerHandler());
+                    }
+                });
 
         try {
             //绑定端口等待同步成功
             ChannelFuture f = b.bind(port).sync();
+            System.out.println(Thread.currentThread().getName()+",服务器开始监听端口，等待客户端连接.......");
             //等待服务监听端口关闭
             f.channel().closeFuture().sync();
         } catch (InterruptedException e) {
