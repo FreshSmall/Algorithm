@@ -1,8 +1,7 @@
-package com.io.netty.protobuf;
+package com.io.netty5.protobuf;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 

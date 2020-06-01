@@ -1,4 +1,4 @@
-package com.io.netty.serializable;
+package com.io.netty5.serializable;
 
 import org.msgpack.annotation.Message;
 

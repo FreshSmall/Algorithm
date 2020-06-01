@@ -1,7 +1,7 @@
-package com.io.netty.protobuf.server;
+package com.io.netty5.protobuf.server;
 
-import com.io.netty.protobuf.SubscribeReqProto;
-import com.io.netty.protobuf.SubscribeRespProto;
+import com.io.netty5.protobuf.SubscribeReqProto;
+import com.io.netty5.protobuf.SubscribeRespProto;
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
 

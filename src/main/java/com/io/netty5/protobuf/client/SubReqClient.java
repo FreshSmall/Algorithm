@@ -1,6 +1,6 @@
-package com.io.netty.protobuf.client;
+package com.io.netty5.protobuf.client;
 
-import com.io.netty.protobuf.SubscribeRespProto;
+import com.io.netty5.protobuf.SubscribeRespProto;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;

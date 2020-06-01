@@ -1,4 +1,4 @@
-package com.io.netty.messagepack;
+package com.io.netty5.messagepack;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;

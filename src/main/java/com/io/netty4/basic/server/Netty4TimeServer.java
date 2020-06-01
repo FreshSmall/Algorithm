@@ -1,7 +1,7 @@
-package com.io.netty.server;
+package com.io.netty4.basic.server;
 
-import com.io.netty.messagepack.MsgpackDecoder;
-import com.io.netty.messagepack.MsgpackEncoder;
+import com.io.netty5.messagepack.MsgpackDecoder;
+import com.io.netty5.messagepack.MsgpackEncoder;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -10,8 +10,8 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
-import io.netty.handler.codec.LengthFieldPrepender;
+import io.netty.handler.codec.string.StringDecoder;
+import io.netty.handler.codec.string.StringEncoder;
 import io.netty.util.concurrent.DefaultThreadFactory;
 
 /**
@@ -21,7 +21,7 @@ import io.netty.util.concurrent.DefaultThreadFactory;
  * @Author : yinchao
  * @create 2020/5/24 7:03 下午
  */
-public class NettyTimeServer {
+public class Netty4TimeServer {
 
     public void bind(int port) {
         //配置服务端的NIO线程组
@@ -36,21 +36,17 @@ public class NettyTimeServer {
 
                     @Override
                     protected void initChannel(SocketChannel socketChannel) throws Exception {
-                        System.out.println(Thread.currentThread().getName()+",服务器初始化通道.....");
-//        arg.pipeline().addLast(new LineBasedFrameDecoder(1024)); 换行分割符
-//        arg.pipeline().addLast(new DelimiterBasedFrameDecoder(1024,delimiter)); 特殊字符分割符
-//        arg.pipeline().addLast(new FixedLengthFrameDecoder(20)); 定长分隔符
-//        arg.pipeline().addLast(new StringDecoder());
-                        socketChannel.pipeline().addLast("msgpack decoder", new MsgpackDecoder());
-                        socketChannel.pipeline().addLast("msgpack encoder", new MsgpackEncoder());
-                        socketChannel.pipeline().addLast(new TimeServerHandler());
+                        System.out.println(Thread.currentThread().getName() + ",服务器初始化通道.....");
+                        socketChannel.pipeline().addLast(new StringDecoder());
+                        socketChannel.pipeline().addLast(new StringEncoder());
+                        socketChannel.pipeline().addLast(new Netty4TimeServerHandler());
                     }
                 });
 
         try {
             //绑定端口等待同步成功
             ChannelFuture f = b.bind(port).sync();
-            System.out.println(Thread.currentThread().getName()+",服务器开始监听端口，等待客户端连接.......");
+            System.out.println(Thread.currentThread().getName() + ",服务器开始监听端口，等待客户端连接.......");
             //等待服务监听端口关闭
             f.channel().closeFuture().sync();
         } catch (InterruptedException e) {
@@ -64,6 +60,6 @@ public class NettyTimeServer {
 
     public static void main(String[] args) {
         int port = 8080;
-        new NettyTimeServer().bind(port);
+        new Netty4TimeServer().bind(port);
     }
 }

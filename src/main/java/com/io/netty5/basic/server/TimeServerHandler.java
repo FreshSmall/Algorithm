@@ -1,15 +1,9 @@
-package com.io.netty.server;
+package com.io.netty5.basic.server;
 
-import com.io.netty.serializable.UserInfo;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
-import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
 
 import java.io.UnsupportedEncodingException;
-import java.util.Date;
-import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.

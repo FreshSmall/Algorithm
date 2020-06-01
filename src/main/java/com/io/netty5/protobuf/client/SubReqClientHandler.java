@@ -1,12 +1,8 @@
-package com.io.netty.protobuf.client;
+package com.io.netty5.protobuf.client;
 
-import com.io.netty.protobuf.SubscribeReqProto;
-import com.io.netty.serializable.UserInfo;
-import io.netty.channel.ChannelHandler;
+import com.io.netty5.protobuf.SubscribeReqProto;
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelHandlerInvoker;
-import io.netty.util.concurrent.EventExecutorGroup;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;

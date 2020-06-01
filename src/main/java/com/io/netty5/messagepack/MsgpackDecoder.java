@@ -1,9 +1,8 @@
-package com.io.netty.messagepack;
+package com.io.netty5.messagepack;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageDecoder;
-import io.netty.handler.codec.MessageToMessageEncoder;
 import org.msgpack.MessagePack;
 
 import java.util.List;

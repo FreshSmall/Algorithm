@@ -1,7 +1,5 @@
-package com.io.netty.client;
+package com.io.netty5.basic.client;
 
-import com.io.netty.messagepack.MsgpackDecoder;
-import com.io.netty.messagepack.MsgpackEncoder;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -12,11 +10,6 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.codec.DelimiterBasedFrameDecoder;
-import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
-import io.netty.handler.codec.LengthFieldPrepender;
-import io.netty.handler.codec.LineBasedFrameDecoder;
-import io.netty.handler.codec.string.StringDecoder;
 import io.netty.util.concurrent.DefaultThreadFactory;
 
 /**
@@ -41,8 +34,8 @@ public class NettyTimeClient {
 //                        socketChannel.pipeline().addLast(new LineBasedFrameDecoder(1024)); //换行符解码器
 //                        socketChannel.pipeline().addLast(new DelimiterBasedFrameDecoder(1024, delimiter));//特殊字符解码器
 //                        socketChannel.pipeline().addLast(new StringDecoder());
-                        socketChannel.pipeline().addLast("msgpack decoder", new MsgpackDecoder());
-                        socketChannel.pipeline().addLast("msgpack encoder", new MsgpackEncoder());
+//                        socketChannel.pipeline().addLast("msgpack decoder", new MsgpackDecoder());
+//                        socketChannel.pipeline().addLast("msgpack encoder", new MsgpackEncoder());
                         socketChannel.pipeline().addLast(new TimeClientHandler());
                     }
                 });
