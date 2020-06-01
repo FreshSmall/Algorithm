@@ -20,7 +20,9 @@ public class BioSocketServer {
             serverSocket = new ServerSocket(DEFAULT_PORT);
             while (true) {
                 //.accept()方法只能一个一个接受socket的情况，并且被阻塞的情况
+                System.out.println("调用accept方法阻塞");
                 Socket socket = serverSocket.accept();
+                System.out.println("已有客户端连接进来");
                 /*SocketServerThread socketServerThread = new SocketServerThread(socket);
                 new Thread(socketServerThread).start();*/
 

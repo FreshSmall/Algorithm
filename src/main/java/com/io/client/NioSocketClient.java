@@ -18,6 +18,7 @@ public class NioSocketClient {
     public void initClient(String host, int port) throws IOException {
         InetSocketAddress socketAddress = new InetSocketAddress(host, port);
         socketChannel = SocketChannel.open(socketAddress);
+        socketChannel.configureBlocking(false);
     }
 
     public void sendAndRecv(String msg) throws IOException {
@@ -25,51 +26,23 @@ public class NioSocketClient {
         ByteBuffer byteBuffer = ByteBuffer.wrap(buffer);
         System.out.println("sending msg:" + msg);
         socketChannel.write(byteBuffer);
-        byteBuffer.clear();
+        byteBuffer.flip();
         socketChannel.read(byteBuffer);
-        System.out.println("receiving msg:" + msg);
-        byteBuffer.clear();
-
-        System.out.println("sending msg:" + msg + "again");
-        byteBuffer = ByteBuffer.wrap((msg + ",again").getBytes());
-        socketChannel.write(byteBuffer);
-        byteBuffer.clear();
-        socketChannel.read(byteBuffer);
-        System.out.println("receiving msg:" + msg);
-        byteBuffer.clear();
-    }
-
-    public void sendAndRecv1(String msg) throws IOException {
-        byte[] buffer = msg.getBytes();
-        byte[] buffer1 = (msg + "again").getBytes();
-        ByteBuffer byteBuffer = ByteBuffer.wrap(buffer);
-        ByteBuffer byteBuffer1 = ByteBuffer.wrap(buffer1);
-        socketChannel.write(byteBuffer);
-        ByteBuffer byteBuffer3 = ByteBuffer.allocate(1000);
-        socketChannel.read(byteBuffer3);
-
-
-        System.out.println("receiving msg:" + new String(byteBuffer3.array(), 0, byteBuffer3.position(), "utf-8"));
-
-        socketChannel.write(byteBuffer1);
-        ByteBuffer byteBuffer4 = ByteBuffer.allocate(1000);
-
-        System.out.println(socketChannel.read(byteBuffer4));
-        System.out.println("receiving msg1:" + new String(byteBuffer4.array(), 0, byteBuffer3.position(), "utf-8"));
-
-
+        System.out.println("receiving msg:" + new String(byteBuffer.array(), 0, byteBuffer.position(), "utf-8"));
     }
 
     public static void main(String[] args) throws IOException {
-        /*NioSocketClient client = new NioSocketClient();
-        client.initClient("localhost", 8083);
-        client.sendAndRecv1("这是一条普通消息");*/
+        NioSocketClient client = new NioSocketClient();
+        for (int i = 0; i < 10; i++) {
+            client.initClient("localhost", 8083);
+            client.sendAndRecv("这是一条普通消息");
+        }
 
-        ByteBuffer buffer = ByteBuffer.allocate(1024);
+        /*ByteBuffer buffer = ByteBuffer.allocate(1024);
         byte[] bytes = "这是一条普通消息！".getBytes();
         buffer.get(bytes);
         buffer.flip();
         System.out.println(buffer.position());
-        System.out.println(buffer.limit());
+        System.out.println(buffer.limit());*/
     }
 }
