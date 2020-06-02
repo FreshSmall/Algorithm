@@ -37,6 +37,7 @@ public class BioSocketServer {
                     byte[] contextBytes = new byte[maxLen];
                     //使用线程，无法解决read方法的阻塞问题
                     //也就是说read方法同样会被阻塞，直到操作系统有数据准备好
+                    System.out.println("等待客户端发送数据");
                     int realLen = in.read(contextBytes, 0, maxLen);
                     //读取信息
                     String message = new String(contextBytes, 0, realLen);
