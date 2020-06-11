@@ -2,7 +2,7 @@ package com.algorithm.leetcode_china.dp;
 
 /**
  * Created by IntelliJ IDEA.
- * 回文字符串
+ * 最长回文字符串
  * @Author : yinchao
  * @create 2020/5/14 11:40 下午
  */
