@@ -47,12 +47,23 @@ public class ThreadDemoTest {
     }
 
     public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        /*BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         br.readLine();
         createBusyThread();
         br.readLine();
         Object obj = new Object();
-        createLockThread(obj);
+        createLockThread(obj);*/
+        Task task = new Task("13");
+        task.start();
+    }
+}
 
+class Task extends Thread{
+    public Task(String name) {
+        System.out.println("启动构造器");
+    }
+
+    public void run(){
+        System.out.println("测试线程，线程名称："+Thread.currentThread().getName());
     }
 }

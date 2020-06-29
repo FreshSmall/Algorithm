@@ -17,13 +17,16 @@ public class NioReactorSocketServer {
         try {
             serverChannel = ServerSocketChannel.open();
             serverChannel.configureBlocking(false);
-            serverSocket = serverChannel.socket();
-            serverSocket.setReuseAddress(true);
-            serverSocket.bind(new InetSocketAddress(8083));
 
             Selector selector = Selector.open();
             //注意：服务器通道只能注册SelectionKey.OP_ACCEPT事件
             serverChannel.register(selector, SelectionKey.OP_ACCEPT);
+
+            serverSocket = serverChannel.socket();
+            serverSocket.setReuseAddress(true);
+            serverSocket.bind(new InetSocketAddress(8083));
+
+
 
             while (true) {
                 //如果条件成立，说明本次询问selector，并没有获取到任务准备好的、感兴趣的事件
