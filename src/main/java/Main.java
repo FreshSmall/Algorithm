@@ -26,6 +26,12 @@ public class Main {
         System.out.println("测试main地址");
     }
 
+    public void testMethod5(){
+        System.out.println("测试main地址");
+    }
+    public void testMethod6(){
+        System.out.println("测试main地址");
+    }
 
     public static void main(String[] args) throws InterruptedException {
 
