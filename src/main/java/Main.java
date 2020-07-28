@@ -8,6 +8,10 @@ public class Main {
         }
     }
 
+    public void testMethod(){
+        System.out.println("测试main地址");
+    }
+
 
 
     public static void main(String[] args) throws InterruptedException {
