@@ -37,6 +37,10 @@ public class Main {
         System.out.println("测试main地址");
     }
 
+    public void testMethod8(){
+        System.out.println("测试main地址");
+    }
+
     public static void main(String[] args) throws InterruptedException {
 
         final Demo d = new Demo();
