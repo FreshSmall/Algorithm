@@ -40,8 +40,15 @@
             <version>3.11.4</version>
         </dependency>
 
+        <!-- 获取文件的mimetype类型 -->
+        <dependency>
+            <groupId>org.apache.tika</groupId>
+            <artifactId>tika-core</artifactId>
+            <version>1.22</version>
+        </dependency>
+
 
     </dependencies>
 
-    
+
 </project>
