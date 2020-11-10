@@ -6,11 +6,14 @@
 
 package com.stream;
 
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import org.apache.tika.Tika;
 
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 
 /**
  * @author yinchao
@@ -37,10 +40,6 @@ public class InputStreamDemo {
         bufferedInputStream.reset();
 
         System.out.println("four available is " + inputStream.available());
-
-//        System.out.println("content Type is " + tika.detect(inputStream));
-//
-//        System.out.println("five available is " + bufferedInputStream.available());
 
 
         if (inputStream == null) {
@@ -75,5 +74,7 @@ public class InputStreamDemo {
     public static void main(String[] args) throws Exception {
         InputStreamDemo demo = new InputStreamDemo();
         demo.testFileInputSteam();
+        System.out.println(URLEncoder.encode("测试.xlsx","UTF-8"));
+        System.out.println(new String("测试".getBytes("UTF-8"),"ISO-8859-1"));
     }
 }

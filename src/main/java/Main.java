@@ -1,3 +1,8 @@
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class Main {
 
     static class Demo extends Thread{
@@ -43,9 +48,32 @@ public class Main {
 
     public static void main(String[] args) throws InterruptedException {
 
-        final Demo d = new Demo();
-        d.start();
-        d.join();
-        System.out.println("Hello World!");
+//        final Demo d = new Demo();
+//        d.start();
+//        d.join();
+//        System.out.println("Hello World!");
+
+        List<String> list = new ArrayList<>();
+        list.add("a");
+        list.add("b");
+        list.add("c");
+        list.add("d");
+
+        List<String> list2 = new ArrayList<>();
+        list2.add("b");
+        list2.add("a");
+        list2.add("c");
+        list2.add("d");
+
+        List<String> list3 = list2.stream().collect(Collectors.toList());
+
+        list3.retainAll(list);
+        list.removeAll(list3);
+        list2.removeAll(list3);
+
+        System.out.println(list.toString());
+        System.out.println(list2.toString());
+        System.out.println(list3.toString());
+
     }
 }

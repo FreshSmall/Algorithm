@@ -58,7 +58,7 @@ public class StreamDemo {
      * 过滤filter
      */
     public void testFilter(){
-        List<Apple> filterList = appleList.stream().filter(a -> a.getName().equals("香蕉")).collect(Collectors.toList());
+        List<Apple> filterList = appleList.stream().filter(a -> a.getName().equals("香蕉1")).collect(Collectors.toList());
         System.out.println(filterList);
     }
 
@@ -67,8 +67,8 @@ public class StreamDemo {
     public static void main(String[] args) {
         init();
         StreamDemo demo = new StreamDemo();
-        demo.testGroup();
-        demo.listToMap();
+//        demo.testGroup();
+//        demo.listToMap();
         demo.testFilter();
     }
 }
