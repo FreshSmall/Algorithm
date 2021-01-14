@@ -22,17 +22,22 @@ import java.util.stream.Collectors;
 public class StreamDemo {
 
     private static List<Apple> appleList;
+    private static List<String> list = new ArrayList<>();
 
-    public static void init(){
+    public static void init() {
         System.out.println("测试地址");
         appleList = new ArrayList<>();//存放apple对象集合
 
-        Apple apple1 =  new Apple(1,"苹果1",new BigDecimal("3.25"),10);
-        Apple apple12 = new Apple(1,"苹果2",new BigDecimal("1.35"),20);
-        Apple apple2 =  new Apple(2,"香蕉",new BigDecimal("2.89"),30);
-        Apple apple3 =  new Apple(3,"荔枝",new BigDecimal("9.99"),40);
+        Apple apple1 = new Apple(1, "苹果1", new BigDecimal("3.25"), 10);
+        Apple apple12 = new Apple(1, "苹果2", new BigDecimal("1.35"), 20);
+        Apple apple2 = new Apple(2, "香蕉", new BigDecimal("2.89"), 30);
+        Apple apple3 = new Apple(3, "荔枝", new BigDecimal("9.99"), 40);
 
-//        appleList.add(apple1);
+        list.add("香蕉");
+        list.add("荔枝");
+
+
+        appleList.add(apple1);
         appleList.add(apple12);
         appleList.add(apple2);
         appleList.add(apple3);
@@ -41,7 +46,7 @@ public class StreamDemo {
     /**
      * 分组
      */
-    public void testGroup(){
+    public void testGroup() {
         Map<Integer, List<Apple>> groupBy = appleList.stream().collect(Collectors.groupingBy(Apple::getId));
         System.out.println(groupBy);
     }
@@ -49,26 +54,38 @@ public class StreamDemo {
     /**
      * list转map
      */
-    public void listToMap(){
-        Map<Object, Object> appleMap = appleList.stream().collect(Collectors.toMap(p -> p.getId(),p -> p.getName()));
+    public void listToMap() {
+        Map<Object, Object> appleMap = appleList.stream().collect(Collectors.toMap(p -> p.getId(), p -> p.getName()));
         System.out.println(appleMap);
     }
 
     /**
      * 过滤filter
      */
-    public void testFilter(){
+    public void testFilter() {
         List<Apple> filterList = appleList.stream().filter(a -> a.getName().equals("香蕉1")).collect(Collectors.toList());
         System.out.println(filterList);
     }
 
+    public void testListFilter() {
+        List<Apple> filterList = appleList.stream().filter(e -> {
+            for (String s : list) {
+                if (s.equals(e.getName())) {
+                    return false;
+                }
+            }
+            return true;
+        }).collect(Collectors.toList());
+        System.out.println(filterList);
+    }
 
 
     public static void main(String[] args) {
-        init();
+        /*init();
         StreamDemo demo = new StreamDemo();
-//        demo.testGroup();
-//        demo.listToMap();
-        demo.testFilter();
+        demo.testListFilter();*/
+        long start = System.currentTimeMillis();
+        System.out.println(start);
+        System.out.println(start+360000000*1000);
     }
 }
