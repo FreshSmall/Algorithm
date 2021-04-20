@@ -7,10 +7,7 @@
 package com.stream;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -79,13 +76,26 @@ public class StreamDemo {
         System.out.println(filterList);
     }
 
+    public void testMap(){
+        Map<String,String> map = new HashMap<>();
+        map.put("java","java1");
+        map.put("c#","c#1");
+        map.put("python","python1");
+        map.put("golang","golang1");
+        Optional<Map.Entry<String, String>> entry = map.entrySet().stream().filter(e -> e.getValue().equals("golang1")).findAny();
+        if (entry.isPresent()) {
+            System.out.println(entry.get().getKey());
+        }else{
+            System.out.println("返回为空");
+        }
+    }
+
 
     public static void main(String[] args) {
         /*init();
         StreamDemo demo = new StreamDemo();
         demo.testListFilter();*/
-        long start = System.currentTimeMillis();
-        System.out.println(start);
-        System.out.println(start+360000000*1000);
+        StreamDemo demo = new StreamDemo();
+        demo.testMap();
     }
 }
