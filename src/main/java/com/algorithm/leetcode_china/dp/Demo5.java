@@ -13,6 +13,7 @@ public class Demo5 {
         int start = 0;
         int maxLen = 0;
         for(int i=0;i<len;i++){
+            // 回文字符串奇数还是偶数
             int cur = Math.max(getMaxLen(i,i,len,s),getMaxLen(i,i+1,len,s));
             if(cur>maxLen){
                 maxLen = cur;
