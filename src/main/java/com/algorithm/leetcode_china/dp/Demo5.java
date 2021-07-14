@@ -1,6 +1,5 @@
 package com.algorithm.leetcode_china.dp;
 
-import java.nio.charset.StandardCharsets;
 
 /**
  * Created by IntelliJ IDEA. 最长回文字符串
@@ -65,7 +64,6 @@ public class Demo5 {
         }
         return s.substring(begin, begin + maxLen);
     }
-
 
     public static void main(String[] args) {
         String str = "aaaa";
