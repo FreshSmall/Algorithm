@@ -1,7 +1,12 @@
 package com.threadpool;
 
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 /**
  * Created by IntelliJ IDEA.
@@ -21,9 +26,27 @@ public class ExecutorThreadPoolDemo {
         });
     }
 
-    public static void main(String[] args) {
+    public void test_Future() throws ExecutionException, InterruptedException, TimeoutException {
+        ExecutorService executorService = Executors.newFixedThreadPool(5);
+        Future<String> submit = executorService.submit(new Callable<String>() {
+
+            @Override
+            public String call() throws Exception {
+                Thread.sleep(2000);
+                return Thread.currentThread().getName();
+            }
+        });
+        while (!submit.isDone()) {
+            System.out.println("任务没有执行完成");
+        }
+        System.out.println(submit.get());
+    }
+
+    public static void main(String[] args)
+        throws ExecutionException, InterruptedException, TimeoutException {
         ExecutorThreadPoolDemo demo = new ExecutorThreadPoolDemo();
-        demo.test_newFixedThreadPool();
+        // demo.test_newFixedThreadPool();
+        demo.test_Future();
     }
 
 }
