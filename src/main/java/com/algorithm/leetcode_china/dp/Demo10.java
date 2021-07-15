@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-package com.algorithm.leetcode_china.dfs;
+package com.algorithm.leetcode_china.dp;
 
 /**
  * @author yinchao
