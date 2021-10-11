@@ -28,6 +28,7 @@ public class RequestDemo {
                 System.out.println("失败");
             }
         });
+        System.out.println("继续上课....");
     }
 
 }
