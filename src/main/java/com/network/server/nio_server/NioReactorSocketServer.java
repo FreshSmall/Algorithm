@@ -7,6 +7,7 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.ByteBuffer;
 import java.nio.channels.*;
+import java.nio.charset.Charset;
 import java.util.Iterator;
 
 public class NioReactorSocketServer {
@@ -41,15 +42,14 @@ public class NioReactorSocketServer {
 
                     if (readyKey.isAcceptable()) {
                         ServerSocketChannel serverSocketChannel = (ServerSocketChannel) readyKey
-                            .channel();
+                                .channel();
                         SocketChannel clientChannel = serverSocketChannel.accept();
                         clientChannel.configureBlocking(false);
                         clientChannel.register(readyKey.selector(), SelectionKey.OP_READ);
                     } else if (readyKey.isReadable()) {
                         SocketChannel clientChannel = (SocketChannel) readyKey.channel();
-                        ByteBuffer readBuffer = ByteBuffer.allocate(10);
-                        int readBytes = clientChannel.read(readBuffer);
-                        if (readBytes == -1) {
+                        ByteBuffer readBuffer = ByteBuffer.allocate(1024);
+                        /*if (readBytes == -1) {
                             System.out.println("closed.......");
                             clientChannel.close();
                         } else if (readBytes > 0) {
@@ -60,7 +60,18 @@ public class NioReactorSocketServer {
                                 readyKey.interestOps(SelectionKey.OP_WRITE);
                                 readyKey.attach("Welcome maizi !!!");
                             }
+                        }*/
+                        // 循环读取客户端请求信息
+                        String request = "";
+                        while (clientChannel.read(readBuffer) > 0) {
+                            // 切换为buffer 读模式
+                            readBuffer.flip();
+                            // 读取buffer中的内容
+                            request += Charset.forName("UTF-8").decode(readBuffer);
+                            System.out.println("返回响应：" + request);
                         }
+                        // 讲channel 再次注册岛selector上，监听其他的可读事件
+                        clientChannel.register(selector, SelectionKey.OP_READ);
                     } else if (readyKey.isValid() && readyKey.isWritable()) {
                         SocketChannel clientChannel = (SocketChannel) readyKey.channel();
                         String content = (String) readyKey.attachment();
@@ -109,7 +120,7 @@ public class NioReactorSocketServer {
      * @param selector
      */
     private static void registerSocketChannel(SocketChannel socketChannel, Selector selector)
-        throws IOException {
+            throws IOException {
         socketChannel.configureBlocking(false);
         //socket通道可以且只可以注册三种事件SelectionKey.OP_READ|SelectionKey.OP_WRITE|Selectionkey.OP_CONNECT
         socketChannel.register(selector, SelectionKey.OP_READ, ByteBuffer.allocate(2048));
@@ -122,7 +133,7 @@ public class NioReactorSocketServer {
         SocketChannel clientSocketChannel = (SocketChannel) readyKey.channel();
         //获取客户端使用的端口
         InetSocketAddress sourceSocketAddress = (InetSocketAddress) clientSocketChannel
-            .getRemoteAddress();
+                .getRemoteAddress();
         int resourcePort = sourceSocketAddress.getPort();
         //拿到这个socket channel使用的缓冲区，准备读取数据
         //在后文，将详细讲解缓存区的用法概念，实际上重要的就是三个元素，capacity,position和limit
@@ -168,7 +179,7 @@ public class NioReactorSocketServer {
 
             //回发数据，并关闭channel
             ByteBuffer sendBuffer = ByteBuffer
-                .wrap(URLEncoder.encode("你好，客户端，这里是服务器的返回数据", "UTF-8").getBytes());
+                    .wrap(URLEncoder.encode("你好，客户端，这里是服务器的返回数据", "UTF-8").getBytes());
             clientSocketChannel.write(sendBuffer);
             clientSocketChannel.close();
         } else {
