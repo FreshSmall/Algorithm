@@ -35,7 +35,7 @@ public class NioSocketClient {
         NioSocketClient client = new NioSocketClient();
         for (int i = 0; i < 10; i++) {
             client.initClient("localhost", 8083);
-            client.sendAndRecv("这是一条普通消息");
+            client.sendAndRecv("hello");
         }
 
         /*ByteBuffer buffer = ByteBuffer.allocate(1024);
