@@ -6,6 +6,7 @@
 
 package com.network.server.nio_server_2;
 
+import java.io.IOException;
 import java.nio.channels.ClosedChannelException;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
@@ -22,21 +23,30 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class Processor implements Runnable {
 
     private Selector selector;
-    private Queue<SocketChannel> newConnections = new ConcurrentLinkedQueue<>();
+    private static final Queue<SocketChannel> newConnections = new ConcurrentLinkedQueue<>();
+    private RequestChannel requestChannel;
 
     @Override
     public void run() {
 
         while (true) {
             // 配置新的连接地址
-            configureNewConnections();
-            // register any new responses for writing
-            processNewResponses();
-            // 发送缓存的响应对象给客户端
-            poll();
-            processCompletedReceives();
-            processCompletedSends();
-            processDisconnected();
+            try {
+                // register any new responses for writing
+                configureNewConnections();
+                processNewResponses();
+                // 发送缓存的响应对象给客户端
+                poll();
+                // 处理已经接收响应的连接
+                processCompletedReceives();
+                // processCompletedSends();
+                // processDisconnected();
+            } catch (ClosedChannelException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
         }
 
     }
@@ -52,5 +62,24 @@ public class Processor implements Runnable {
             SocketChannel channel = newConnections.poll();
             channel.register(selector, SelectionKey.OP_READ);
         }
+    }
+
+    private void processNewResponses() {
+        String curr = requestChannel.receiveResponse("id");
+        while (curr != null) {
+            try {
+                System.out.println("返回响应：" + curr);
+            } finally {
+                curr = requestChannel.receiveResponse("");
+            }
+        }
+    }
+
+    private void poll() throws IOException {
+        selector.select(300);
+    }
+
+
+    private void processCompletedReceives() {
     }
 }
