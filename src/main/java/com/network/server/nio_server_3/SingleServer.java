@@ -40,7 +40,6 @@ public class SingleServer {
             Iterator<SelectionKey> iterator = selector.selectedKeys().iterator();
             while (iterator.hasNext()) {
                 SelectionKey key = iterator.next();
-                iterator.remove();
                 if (key.isAcceptable()) {
                     System.out.println("连接开始");
                     SocketChannel sc = serverSocketChannel.accept();
@@ -53,6 +52,7 @@ public class SingleServer {
                     Processor processor = (Processor) key.attachment();
                     processor.process(key);
                 }*/
+                iterator.remove();
             }
         }
     }
@@ -78,7 +78,6 @@ public class SingleServer {
                 Iterator<SelectionKey> iterator = selector.selectedKeys().iterator();
                 while (iterator.hasNext()) {
                     SelectionKey key = iterator.next();
-                    iterator.remove();
                     if (key.isReadable()) {
                         SocketChannel clientChannel = (SocketChannel) key.channel();
                         ByteBuffer readBuffer = ByteBuffer.allocate(1024);
@@ -97,13 +96,20 @@ public class SingleServer {
                             request += Charset.forName("UTF-8").decode(readBuffer);
                             System.out.println("返回响应：" + request);
                         }
+                        key.interestOps(SelectionKey.OP_WRITE);
+                        key.attach("Welcome maizi !!!\n");
+                    } else if (key.isWritable()) {
+                        SocketChannel clientChannel = (SocketChannel) key.channel();
+                        String content = (String) key.attachment();
+                        // write content to socket channel
                         try {
-                            clientChannel.register(selector, SelectionKey.OP_READ);
-                        } catch (ClosedChannelException e) {
+                            clientChannel.write(ByteBuffer.wrap(content.getBytes()));
+                        } catch (IOException e) {
                             e.printStackTrace();
                         }
-
+                        key.interestOps(SelectionKey.OP_READ);
                     }
+                    iterator.remove();
                 }
             }
         }
@@ -120,7 +126,7 @@ public class SingleServer {
                 selectionKey.cancel();
                 System.out.println(socketChannel + " Read ended");
             }
-            System.out.println(socketChannel+"Read message "+new String(buffer.array()));
+            System.out.println(socketChannel + "Read message " + new String(buffer.array()));
         }
     }
 }

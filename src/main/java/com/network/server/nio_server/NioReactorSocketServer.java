@@ -70,7 +70,7 @@ public class NioReactorSocketServer {
                             request += Charset.forName("UTF-8").decode(readBuffer);
                             System.out.println("返回响应：" + request);
                         }
-                        // 讲channel 再次注册岛selector上，监听其他的可读事件
+                        // 讲channel 再次注册到selector上，监听其他的可读事件
                         clientChannel.register(selector, SelectionKey.OP_READ);
                     } else if (readyKey.isValid() && readyKey.isWritable()) {
                         SocketChannel clientChannel = (SocketChannel) readyKey.channel();

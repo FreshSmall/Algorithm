@@ -18,7 +18,6 @@ public class BioSocketServer {
             serverSocket = new ServerSocket(DEFAULT_PORT);
             while (true) {
                 //.accept()方法只能一个一个接受socket的情况，并且被阻塞的情况
-                System.out.println("调用accept方法阻塞");
                 Socket socket = serverSocket.accept();
                 System.out.println("已有客户端连接进来");
                 /*SocketServerThread socketServerThread = new SocketServerThread(socket);
@@ -35,7 +34,6 @@ public class BioSocketServer {
                     byte[] contextBytes = new byte[maxLen];
                     //使用线程，无法解决read方法的阻塞问题
                     //也就是说read方法同样会被阻塞，直到操作系统有数据准备好
-                    System.out.println("等待客户端发送数据");
                     int realLen = in.read(contextBytes, 0, maxLen);
                     //读取信息
                     String message = new String(contextBytes, 0, realLen);
@@ -44,6 +42,7 @@ public class BioSocketServer {
 
                     //下面开始发送信息给客户端
                     out.write("回访响应信息！".getBytes("utf-8"));
+                    // out.flush();
                 } catch (IOException e) {
                     e.printStackTrace();
                 } finally {

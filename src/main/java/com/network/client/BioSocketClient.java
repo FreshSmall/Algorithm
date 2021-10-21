@@ -14,10 +14,5 @@ public class BioSocketClient {
             ClientRequestThread client = new ClientRequestThread(countDownLatch, index);
             new Thread(client).start();
         }
-
-        // 这个wait不涉及到具体的实验逻辑，只是为了保证守护线程在启动所有线程后，进入等待状态
-        synchronized (BioSocketClient.class) {
-            BioSocketClient.class.wait();
-        }
     }
 }
