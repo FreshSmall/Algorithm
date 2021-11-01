@@ -7,16 +7,18 @@
 package com.network.server.nio_server_3;
 
 
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
-import java.nio.channels.ClosedChannelException;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
-import java.nio.charset.Charset;
 import java.util.Iterator;
+import java.util.Set;
 
 /**
  * @author yinchao
@@ -24,109 +26,67 @@ import java.util.Iterator;
  * @team wuhan operational dev.
  * @date 2021/10/19 19:13
  **/
+@Slf4j
 public class SingleServer {
 
     public static void main(String[] args) throws IOException {
         ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
+        serverSocketChannel.bind(new InetSocketAddress(8083));
         serverSocketChannel.configureBlocking(false);
         Selector selector = Selector.open();
         SelectionKey bossKey = serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
         bossKey.interestOps(SelectionKey.OP_ACCEPT);
-        serverSocketChannel.bind(new InetSocketAddress(8083));
         while (true) {
-            if (selector.select(100) == 0) {
-                continue;
-            }
-            Iterator<SelectionKey> iterator = selector.selectedKeys().iterator();
-            while (iterator.hasNext()) {
-                SelectionKey key = iterator.next();
+            selector.select();
+            Set<SelectionKey> keys = selector.selectedKeys();
+            Iterator<SelectionKey> it = keys.iterator();
+            while (it.hasNext()) {
+                SelectionKey key = it.next();
+                it.remove();
                 if (key.isAcceptable()) {
                     System.out.println("连接开始");
-                    SocketChannel sc = serverSocketChannel.accept();
+                    ServerSocketChannel ssc = (ServerSocketChannel) key.channel();
+                    SocketChannel sc = ssc.accept();
                     sc.configureBlocking(false);
                     // 2. 关联selector
-                    SelectionKey readKey = sc.register(selector, SelectionKey.OP_READ);
-                    new Thread(new Worker(selector)).start();
-                    // readKey.attach(new Processor());
-                } /*else if (key.isReadable()) {
-                    Processor processor = (Processor) key.attachment();
-                    processor.process(key);
-                }*/
-                iterator.remove();
+                    sc.register(selector, SelectionKey.OP_READ);
+                } else if (key.isReadable()) {
+                    new Thread(new Worker(key)).start();
+                }
             }
         }
     }
 
     static class Worker implements Runnable {
 
-        private Selector selector;
+        private SelectionKey key;
 
-        public Worker(Selector selector) {
-            this.selector = selector;
+        public Worker(SelectionKey key) {
+            this.key = key;
         }
 
+        @SneakyThrows
         @Override
-        public void run() {
-            while (true) {
-                try {
-                    if (selector.select(100) == 0) {
-                        continue;
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
+        public synchronized void run() {
+            SocketChannel clientChannel = null;
+            try {
+                clientChannel = (SocketChannel) key.channel();
+                ByteBuffer buffer = ByteBuffer.allocate(1024);
+                buffer.clear();
+                int len = clientChannel.read(buffer);
+
+                if (len != 1) {
+                    System.out.println(new String(buffer.array(), 0, len));
                 }
-                Iterator<SelectionKey> iterator = selector.selectedKeys().iterator();
-                while (iterator.hasNext()) {
-                    SelectionKey key = iterator.next();
-                    if (key.isReadable()) {
-                        SocketChannel clientChannel = (SocketChannel) key.channel();
-                        ByteBuffer readBuffer = ByteBuffer.allocate(1024);
-                        String request = "";
-                        while (true) {
-                            try {
-                                if (!(clientChannel.read(readBuffer) > 0)) {
-                                    break;
-                                }
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                            // 切换为buffer 读模式
-                            readBuffer.flip();
-                            // 读取buffer中的内容
-                            request += Charset.forName("UTF-8").decode(readBuffer);
-                            System.out.println("返回响应：" + request);
-                        }
-                        key.interestOps(SelectionKey.OP_WRITE);
-                        key.attach("Welcome maizi !!!\n");
-                    } else if (key.isWritable()) {
-                        SocketChannel clientChannel = (SocketChannel) key.channel();
-                        String content = (String) key.attachment();
-                        // write content to socket channel
-                        try {
-                            clientChannel.write(ByteBuffer.wrap(content.getBytes()));
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        key.interestOps(SelectionKey.OP_READ);
-                    }
-                    iterator.remove();
+                ByteBuffer bufferToWrite = ByteBuffer.wrap("I am Server".getBytes());
+                clientChannel.write(bufferToWrite);
+            } catch (Exception e) {
+                log.info(e.getMessage(), e);
+            } finally {
+                if (clientChannel != null) {
+                    clientChannel.close();
                 }
             }
-        }
-    }
-
-    static class Processor {
-
-        public void process(SelectionKey selectionKey) throws IOException {
-            ByteBuffer buffer = ByteBuffer.allocate(1024);
-            SocketChannel socketChannel = (SocketChannel) selectionKey.channel();
-            int count = socketChannel.read(buffer);
-            if (count < 0) {
-                socketChannel.close();
-                selectionKey.cancel();
-                System.out.println(socketChannel + " Read ended");
-            }
-            System.out.println(socketChannel + "Read message " + new String(buffer.array()));
         }
     }
 }
