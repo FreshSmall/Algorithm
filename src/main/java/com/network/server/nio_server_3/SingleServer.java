@@ -19,6 +19,9 @@ import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * @author yinchao
@@ -28,6 +31,8 @@ import java.util.Set;
  **/
 @Slf4j
 public class SingleServer {
+
+    private static ExecutorService pool = Executors.newFixedThreadPool(100);
 
     public static void main(String[] args) throws IOException {
         ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
@@ -43,21 +48,21 @@ public class SingleServer {
             while (it.hasNext()) {
                 SelectionKey key = it.next();
                 it.remove();
-                if (key.isAcceptable()) {
+                if (key.isValid() && key.isAcceptable()) {
                     System.out.println("连接开始");
                     ServerSocketChannel ssc = (ServerSocketChannel) key.channel();
                     SocketChannel sc = ssc.accept();
                     sc.configureBlocking(false);
                     // 2. 关联selector
                     sc.register(selector, SelectionKey.OP_READ);
-                } else if (key.isReadable()) {
-                    new Thread(new Worker(key)).start();
+                } else if (key.isValid() && key.isReadable()) {
+                    pool.submit(new Worker(key));
                 }
             }
         }
     }
 
-    static class Worker implements Runnable {
+    static class Worker implements Callable {
 
         private SelectionKey key;
 
@@ -65,9 +70,8 @@ public class SingleServer {
             this.key = key;
         }
 
-        @SneakyThrows
         @Override
-        public synchronized void run() {
+        public Object call() throws Exception {
             SocketChannel clientChannel = null;
             try {
                 clientChannel = (SocketChannel) key.channel();
@@ -87,6 +91,7 @@ public class SingleServer {
                     clientChannel.close();
                 }
             }
+            return null;
         }
     }
 }
