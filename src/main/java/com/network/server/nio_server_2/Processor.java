@@ -34,13 +34,11 @@ public class Processor implements Runnable {
             try {
                 // register any new responses for writing
                 configureNewConnections();
-                processNewResponses();
+                // processNewResponses();
                 // 发送缓存的响应对象给客户端
                 poll();
                 // 处理已经接收响应的连接
                 processCompletedReceives();
-                // processCompletedSends();
-                // processDisconnected();
             } catch (ClosedChannelException e) {
                 e.printStackTrace();
             } catch (IOException e) {
