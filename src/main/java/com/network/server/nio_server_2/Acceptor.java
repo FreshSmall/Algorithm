@@ -28,23 +28,20 @@ public class Acceptor {
     private Processor[] processors = new Processor[5];
 
     public Acceptor() throws IOException {
-        for (int i = 0; i < 5; i++) {
-            processors[i] = new Processor();
-            new Thread(processors[i]).start();
-        }
         ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
         serverSocketChannel.configureBlocking(false);
         serverSocketChannel.socket().bind(new InetSocketAddress(8083));
         selector = Selector.open();
         serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
+        for (int i = 0; i < 5; i++) {
+            processors[i] = new Processor(selector);
+            new Thread(processors[i]).start();
+        }
     }
 
     public void startUp() throws IOException {
         int currentProcessor = 0;
         while (true) {
-            if (selector.select(100) == 0) {
-                continue;
-            }
             Set<SelectionKey> selectionKeys = selector.selectedKeys();
             Iterator<SelectionKey> iterator = selectionKeys.iterator();
             while (iterator.hasNext()) {
@@ -64,6 +61,7 @@ public class Acceptor {
 
 
     private void accept(SelectionKey key, Processor processor) throws IOException {
+        System.out.println("客户端有连接接入");
         ServerSocketChannel serverSocketChannel = (ServerSocketChannel) key
             .channel();
         // 创建sockerchannel 对象
@@ -71,6 +69,6 @@ public class Acceptor {
         sockerChannel.configureBlocking(false);
         sockerChannel.socket().setTcpNoDelay(true);
         sockerChannel.socket().setKeepAlive(true);
-        processor.accept(sockerChannel,selector);
+        processor.accept(sockerChannel, selector);
     }
 }

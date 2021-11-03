@@ -26,6 +26,10 @@ public class Processor implements Runnable {
     private static final Queue<SocketChannel> newConnections = new ConcurrentLinkedQueue<>();
     private RequestChannel requestChannel;
 
+    public Processor(Selector selector) {
+        this.selector = selector;
+    }
+
     @Override
     public void run() {
 
