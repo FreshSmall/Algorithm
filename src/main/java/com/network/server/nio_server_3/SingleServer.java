@@ -7,7 +7,6 @@
 package com.network.server.nio_server_3;
 
 
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -40,7 +39,7 @@ public class SingleServer {
         serverSocketChannel.configureBlocking(false);
         Selector selector = Selector.open();
         SelectionKey bossKey = serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
-        bossKey.interestOps(SelectionKey.OP_ACCEPT);
+        // bossKey.interestOps(SelectionKey.OP_ACCEPT);
         while (true) {
             selector.select();
             Set<SelectionKey> keys = selector.selectedKeys();
@@ -54,7 +53,7 @@ public class SingleServer {
                     SocketChannel sc = ssc.accept();
                     sc.configureBlocking(false);
                     // 2. 关联selector
-                    sc.register(selector, SelectionKey.OP_READ);
+                    // sc.register(selector, SelectionKey.OP_READ);
                 } else if (key.isValid() && key.isReadable()) {
                     pool.submit(new Worker(key));
                 }
