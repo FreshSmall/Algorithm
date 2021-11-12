@@ -14,6 +14,7 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * @author yinchao
@@ -24,17 +25,14 @@ import java.util.Queue;
 @Slf4j
 public class Processor implements Runnable {
 
-    private Queue<SelectionKey> queue;
-
-    public Processor(Queue<SelectionKey> queue) {
-        this.queue = queue;
-    }
+    private static final Queue<SelectionKey> queue = new ConcurrentLinkedQueue<>();
 
     @Override
     public void run() {
         while (true) {
             if (!queue.isEmpty()) {
                 SelectionKey key = queue.poll();
+                System.out.println("从Processor 队列中获取 key:" + key + ",queue size:" + queue.size());
                 handleConnect(key);
             }
         }
@@ -48,7 +46,8 @@ public class Processor implements Runnable {
                 System.out.println("accept a client:" + sc.getRemoteAddress());
                 // 继续注册socket的读事件
                 sc.configureBlocking(false);
-                sc.register(key.selector(), SelectionKey.OP_READ);
+                SelectionKey key1 = sc.register(key.selector(), SelectionKey.OP_READ);
+                System.out.println("key1:" + key1);
             } catch (IOException e) {
                 log.info(e.getMessage(), e);
             } finally {
@@ -76,6 +75,14 @@ public class Processor implements Runnable {
                     }
                 }
             }
+        }
+        System.out.println("key" + key + ",连接处理完毕");
+    }
+
+    public void process(SelectionKey key) {
+        if (!queue.contains(key)) {
+            System.out.println("插入 key :" + key);
+            queue.add(key);
         }
     }
 }
