@@ -40,7 +40,7 @@ public class NioReactorServer {
         // Select 轮询监听channel事件（这里是注册连接事件）将其注册到new出来的`ServerSocketChannel`
         Selector selector = Selector.open();
         ssc.register(selector, SelectionKey.OP_ACCEPT);
-        Processor processor = new Processor();
+        Processor processor = new Processor(selector);
         new Thread(processor).start();
         while (true) {
             // selector.select(); 阻塞等待连接事件，当然也可以设置select方法的超时
@@ -53,7 +53,10 @@ public class NioReactorServer {
                     SelectionKey key = it.next();
                     it.remove();
                     // 处理连接事件
-                    processor.process(key);
+                    ServerSocketChannel ssc1 = (ServerSocketChannel) key.channel();
+                    SocketChannel sc = ssc1.accept();
+                    sc.configureBlocking(false);
+                    processor.process(sc);
                 }
             }
         }
