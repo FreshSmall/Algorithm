@@ -56,7 +56,10 @@ public class NioReactorServer {
                     ServerSocketChannel ssc1 = (ServerSocketChannel) key.channel();
                     SocketChannel sc = ssc1.accept();
                     sc.configureBlocking(false);
-                    processor.process(sc);
+                    NioSocketChannel nioSocketChannel = new NioSocketChannel();
+                    nioSocketChannel.setSocketChannel(sc);
+                    nioSocketChannel.setReadyOps(key.readyOps());
+                    processor.process(nioSocketChannel);
                 }
             }
         }

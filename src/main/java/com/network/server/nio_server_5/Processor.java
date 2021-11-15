@@ -29,7 +29,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class Processor implements Runnable {
 
     private Selector selector;
-    private static final Queue<SocketChannel> queue = new ConcurrentLinkedQueue<>();
+    private static final Queue<NioSocketChannel> queue = new ConcurrentLinkedQueue<>();
 
     public Processor(Selector selector) {
         this.selector = selector;
@@ -39,37 +39,38 @@ public class Processor implements Runnable {
     public void run() {
         while (true) {
             if (!queue.isEmpty()) {
-                SocketChannel socketChannel = queue.poll();
+                NioSocketChannel socketChannel = queue.poll();
                 handleConnect(socketChannel);
             }
         }
     }
 
-    private void handleConnect(SocketChannel socketChannel) {
+    private void handleConnect(NioSocketChannel socketChannel) {
+        SocketChannel sc = socketChannel.getSocketChannel();
         try {
-            SelectionKey key1 = socketChannel.register(selector, SelectionKey.OP_READ);
-            ByteBuffer buffer = ByteBuffer.allocate(1024);
-            buffer.clear();
-            int len = socketChannel.read(buffer);
-            if (len != -1) {
-                System.out.println(new String(buffer.array(), 0, len));
+            int readyOps = socketChannel.getReadyOps();
+            if ((readyOps & (1 << 4)) != 0) {
+                try {
+                    sc.register(selector, SelectionKey.OP_READ);
+                } catch (IOException e) {
+                    log.info(e.getMessage(), e);
+                }
+            } else if ((readyOps & (1 << 0)) != 0) {
+                ByteBuffer buffer = ByteBuffer.allocate(1024);
+                buffer.clear();
+                int len = sc.read(buffer);
+                if (len != -1) {
+                    System.out.println(new String(buffer.array(), 0, len));
+                }
+                ByteBuffer bufferToWrite = ByteBuffer.wrap("I am Server".getBytes());
+                sc.write(bufferToWrite);
             }
-            ByteBuffer bufferToWrite = ByteBuffer.wrap("I am Server".getBytes());
-            socketChannel.write(bufferToWrite);
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            if (socketChannel != null) {
-                try {
-                    socketChannel.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
         }
     }
 
-    public void process(SocketChannel socketChannel) {
+    public void process(NioSocketChannel socketChannel) {
         queue.add(socketChannel);
         selector.wakeup();
     }
