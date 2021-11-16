@@ -41,7 +41,7 @@ public class BioSocketServer {
                     System.out.println("服务器收到来自于端口：" + sourcePost + "的信息：" + message);
 
                     //下面开始发送信息给客户端
-                    out.write("回访响应信息！".getBytes("utf-8"));
+                    out.write(message.getBytes("utf-8"));
                     // out.flush();
                 } catch (IOException e) {
                     e.printStackTrace();

@@ -20,6 +20,7 @@ public class Netty4TimeServerHandler extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
         System.out.println(++count + "--->" + Thread.currentThread().getName() + ",The server receive message : " + msg);
         ctx.writeAndFlush(msg);
+        ctx.close();
     }
 
 

@@ -31,7 +31,6 @@ public class Netty4TimeServer {
                 .channel(NioServerSocketChannel.class)
                 .option(ChannelOption.SO_BACKLOG, 1024)
                 .childHandler(new ChannelInitializer<SocketChannel>() {
-
                     @Override
                     protected void initChannel(SocketChannel socketChannel) throws Exception {
                         System.out.println(Thread.currentThread().getName() + ",服务器初始化通道.....");
@@ -57,7 +56,7 @@ public class Netty4TimeServer {
     }
 
     public static void main(String[] args) {
-        int port = 8080;
+        int port = 8083;
         new Netty4TimeServer().bind(port);
     }
 }
