@@ -42,8 +42,8 @@ public class NettyServer {
                     socketChannel.pipeline().addLast(new StringDecoder());
                     // 编码
                     socketChannel.pipeline().addLast(new StringEncoder());
-                    // 消息出站处理器，在client发送消息时，会触发此处理器
-                    // socketChannel.pipeline().addLast(new MyOutServerHandler());
+                    // 消息出站处理器，在client发送消息时，会触发此处理器，监听自己的IO操作，比如connect，bind等
+                    socketChannel.pipeline().addLast(new MyOutServerHandler());
                     socketChannel.pipeline().addLast(new MyInServerHandler());
                 }
             });

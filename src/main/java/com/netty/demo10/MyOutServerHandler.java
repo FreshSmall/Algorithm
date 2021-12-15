@@ -10,6 +10,8 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelOutboundHandlerAdapter;
 import io.netty.channel.ChannelPromise;
 
+import java.net.SocketAddress;
+
 /**
  * @author yinchao
  * @description 消息出站处理器
@@ -20,14 +22,28 @@ public class MyOutServerHandler extends ChannelOutboundHandlerAdapter {
 
     @Override
     public void read(ChannelHandlerContext ctx) throws Exception {
-        ctx.writeAndFlush("ChannelOutboundHandlerAdapter.read 发来一条消息\r\n");
+        System.out.println("服务端收到客户端写入的数据");
         super.read(ctx);
     }
 
     @Override
     public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise)
         throws Exception {
-        ctx.writeAndFlush("ChannelOutboundHandlerAdapter.write 发来一条消息\r\n");
+        System.out.println("服务端写入完成");
         super.write(ctx, msg, promise);
+    }
+
+    @Override
+    public void bind(ChannelHandlerContext ctx, SocketAddress localAddress, ChannelPromise promise)
+        throws Exception {
+        System.out.println("服务端绑定了端口");
+        super.bind(ctx, localAddress, promise);
+    }
+
+    @Override
+    public void connect(ChannelHandlerContext ctx, SocketAddress remoteAddress,
+        SocketAddress localAddress, ChannelPromise promise) throws Exception {
+        System.out.println("客户端连接成功");
+        super.connect(ctx, remoteAddress, localAddress, promise);
     }
 }
