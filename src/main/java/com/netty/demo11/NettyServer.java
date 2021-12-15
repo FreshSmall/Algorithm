@@ -6,6 +6,7 @@
 
 package com.netty.demo11;
 
+import io.netty.bootstrap.Bootstrap;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -13,6 +14,7 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
+import io.netty.channel.socket.nio.NioDatagramChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
 /**
@@ -26,18 +28,18 @@ public class NettyServer {
     public void bind(int port) {
         //配置服务端的NIO线程组
         EventLoopGroup boosGroup = new NioEventLoopGroup();
-        EventLoopGroup workerGroup = new NioEventLoopGroup();
 
-        ServerBootstrap b = new ServerBootstrap();
-        b.group(boosGroup, workerGroup)
-            .channel(NioServerSocketChannel.class)
+        Bootstrap b = new Bootstrap();
+
+        b.group(boosGroup)
+            .channel(NioDatagramChannel.class)
             .option(ChannelOption.SO_BROADCAST, true)
             .option(ChannelOption.SO_RCVBUF, 2048 * 1024)
             .option(ChannelOption.SO_SNDBUF, 1024 * 1024)
-            .childHandler(new ChannelInitializer<SocketChannel>() {
+            .handler(new ChannelInitializer<NioDatagramChannel>() {
                 @Override
-                protected void initChannel(SocketChannel socketChannel) throws Exception {
-                    socketChannel.pipeline().addLast(new MyServerHandler());
+                protected void initChannel(NioDatagramChannel nioDatagramChannel) throws Exception {
+                    nioDatagramChannel.pipeline().addLast(new MyServerHandler());
                 }
             });
 
@@ -52,12 +54,11 @@ public class NettyServer {
         } finally {
             //优雅退出，释放线程资源
             boosGroup.shutdownGracefully();
-            workerGroup.shutdownGracefully();
         }
     }
 
     public static void main(String[] args) {
-        int port = 8083;
+        int port = 8084;
         new NettyServer().bind(port);
     }
 

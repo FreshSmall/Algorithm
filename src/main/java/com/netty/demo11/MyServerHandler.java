@@ -6,10 +6,12 @@
 
 package com.netty.demo11;
 
+import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.socket.DatagramPacket;
 
+import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -31,5 +33,9 @@ public class MyServerHandler extends SimpleChannelInboundHandler<DatagramPacket>
         // 向客户端发送消息
         String json = "服务端:我已经收到客户端发送的消息";
         ctx.writeAndFlush(json);
+        // 由于数据报的数据是以字符数组传的形式存储的，所以传转数据
+        // byte[] bytes = json.getBytes(Charset.forName("GBK"));
+        // DatagramPacket data = new DatagramPacket(Unpooled.copiedBuffer(bytes), packet.sender());
+        // ctx.writeAndFlush(data);//向客户端发送消息
     }
 }
