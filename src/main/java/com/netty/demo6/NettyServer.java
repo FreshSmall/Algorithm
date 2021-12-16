@@ -6,9 +6,6 @@
 
 package com.netty.demo6;
 
-import com.netty.netty4.server.Netty4TimeServer;
-import com.netty.netty4.server.Netty4TimeServerHandler;
-import com.netty.netty5.basic.server.NettyTimeServer;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
