@@ -27,15 +27,15 @@ public class MyServerHandler extends SimpleChannelInboundHandler<DatagramPacket>
     @Override
     protected void channelRead0(ChannelHandlerContext ctx,
         DatagramPacket packet) throws Exception {
-        String str = packet.content().toString();
+        String str = packet.content().toString(Charset.forName("GBK"));
         System.out.println(
             new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + ",服务端收到消息：" + str);
         // 向客户端发送消息
         String json = "服务端:我已经收到客户端发送的消息";
         ctx.writeAndFlush(json);
         // 由于数据报的数据是以字符数组传的形式存储的，所以传转数据
-        // byte[] bytes = json.getBytes(Charset.forName("GBK"));
-        // DatagramPacket data = new DatagramPacket(Unpooled.copiedBuffer(bytes), packet.sender());
-        // ctx.writeAndFlush(data);//向客户端发送消息
+        byte[] bytes = json.getBytes(Charset.forName("GBK"));
+        DatagramPacket data = new DatagramPacket(Unpooled.copiedBuffer(bytes), packet.sender());
+        ctx.writeAndFlush(data);//向客户端发送消息
     }
 }
