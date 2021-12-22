@@ -8,6 +8,7 @@ package com.netty.demo_13_4.client;
 
 import com.netty.demo_13_4.codec.ObjDecoder;
 import com.netty.demo_13_4.codec.ObjEncoder;
+import com.netty.demo_13_4.dto.FileTransferProtocol;
 import com.netty.demo_13_4.dto.MessageInfo;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
@@ -27,33 +28,39 @@ import io.netty.channel.socket.nio.NioSocketChannel;
  **/
 public class NettyClient {
 
-    public static void main(String[] args) {
-        EventLoopGroup group = new NioEventLoopGroup();
+    // 配置服务端NIO线程组
+    private EventLoopGroup workGroup = new NioEventLoopGroup();
+    private Channel channel;
+
+    public ChannelFuture connect(String host, int port) {
+        ChannelFuture f = null;
         try {
             Bootstrap b = new Bootstrap();
-            b.group(group).channel(NioSocketChannel.class)
+            b.group(workGroup).channel(NioSocketChannel.class)
                 .handler(new ChannelInitializer() {
                     @Override
                     protected void initChannel(Channel channel) throws Exception {
                         ChannelPipeline pipeline = channel.pipeline();
                         // 解码转String，注意调整自己的编码格式GBK、UTF-8
-                        pipeline.addLast(new ObjDecoder(MessageInfo.class));
-                        pipeline.addLast(new ObjEncoder(MessageInfo.class));
+                        pipeline.addLast(new ObjDecoder(FileTransferProtocol.class));
+                        pipeline.addLast(new ObjEncoder(FileTransferProtocol.class));
                         pipeline.addLast(new NettyClientHandler());
                     }
                 });
-            ChannelFuture f = b.connect("127.0.0.1", 8083).sync();
+
+            f = b.connect(host, port).sync();
             System.out.println("netty client system start done");
-            f.channel().writeAndFlush(new MessageInfo(f.channel().id().toString(), "发送服务端相关信息"));
-            f.channel().writeAndFlush(new MessageInfo(f.channel().id().toString(), "发送服务端相关信息"));
-            f.channel().writeAndFlush(new MessageInfo(f.channel().id().toString(), "发送服务端相关信息"));
-            f.channel().writeAndFlush(new MessageInfo(f.channel().id().toString(), "发送服务端相关信息"));
-            f.channel().writeAndFlush(new MessageInfo(f.channel().id().toString(), "发送服务端相关信息"));
-            f.channel().closeFuture().sync();
+            this.channel = f.channel();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            group.shutdownGracefully();
         }
+        return f;
+    }
+
+    public void destroy() {
+        if (null == channel) return;
+        channel.close();
+        workGroup.shutdownGracefully();
     }
 }

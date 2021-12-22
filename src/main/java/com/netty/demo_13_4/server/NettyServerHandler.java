@@ -14,6 +14,7 @@ import com.netty.demo_13_4.dto.FileDespInfo;
 import com.netty.demo_13_4.dto.FileTransferProtocol;
 import com.netty.demo_13_4.dto.MessageInfo;
 import com.netty.demo_13_4.util.CacheUtil;
+import com.netty.demo_13_4.util.FileUtil;
 import com.netty.demo_13_4.util.MsgUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -36,7 +37,7 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
         System.out.println("连接开始");
         String str =
             "通知服务端链接建立成功" + ",时间:" + new Date() + ",地址:" + channel.localAddress().getHostString();
-        ctx.writeAndFlush(new MessageInfo(channel.id().toString(), str));
+        System.out.println(str);
     }
 
     @Override
@@ -59,22 +60,37 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
                         CacheUtil.burstDataMap.remove(fileDespInfo.getFileName());
                     }
                     // 传输完成删除断点信息
-                    System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date())
-                        + " bugstack虫洞栈服务端，接收客户端传输文件请求[断点续传]。" + JSON
-                        .toJSONString(fileBurstInstructOld));
+                    System.out
+                        .println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date())
+                            + " bugstack虫洞栈服务端，接收客户端传输文件请求[断点续传]。" + JSON
+                            .toJSONString(fileBurstInstructOld));
                     ctx.writeAndFlush(MsgUtil.buildTransferInstruct(fileBurstInstructOld));
                     return;
                 }
                 // 发送信息
-                FileTransferProtocol sendFileTransferProtocol = MsgUtil.buildTransferInstruct(Constants.FileStatus.BEGIN, fileDespInfo.getFileUrl(), 0);
+                FileTransferProtocol sendFileTransferProtocol = MsgUtil
+                    .buildTransferInstruct(Constants.FileStatus.BEGIN, fileDespInfo.getFileUrl(),
+                        0);
                 ctx.writeAndFlush(sendFileTransferProtocol);
-                System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + " bugstack虫洞栈服务端，接收客户端传输文件请求。" + JSON.toJSONString(fileDespInfo));
+                System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date())
+                    + " bugstack虫洞栈服务端，接收客户端传输文件请求。" + JSON.toJSONString(fileDespInfo));
                 break;
             case 2:
                 FileBurstData fileBurstData = (FileBurstData) fileTransferProtocol.getTransferObj();
-                FileBurstInstruct fileBurstInstruct = FileU
+                FileBurstInstruct fileBurstInstruct = FileUtil.writeFile("/tmp/", fileBurstData);
+                // 保存断点续传信息
+                CacheUtil.burstDataMap.put(fileBurstData.getFileName(), fileBurstInstruct);
+                ctx.writeAndFlush(MsgUtil.buildTransferInstruct(fileBurstInstruct));
+                System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date())
+                    + "服务端，接收客户端传输文件数据。" + JSON.toJSONString(fileBurstData));
 
-
+                // 传输完成删除断点信息
+                if (fileBurstInstruct.getStatus() == Constants.FileStatus.COMPLETED) {
+                    CacheUtil.burstDataMap.remove(fileBurstData.getFileName());
+                }
+                break;
+            default:
+                break;
         }
     }
 

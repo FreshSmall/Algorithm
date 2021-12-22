@@ -9,6 +9,7 @@ package com.netty.demo_13_4.util;
 import com.netty.demo_13_4.dto.Constants;
 import com.netty.demo_13_4.dto.FileBurstData;
 import com.netty.demo_13_4.dto.FileBurstInstruct;
+import com.netty.demo_13_4.dto.FileDespInfo;
 import com.netty.demo_13_4.dto.FileTransferProtocol;
 
 /**
@@ -29,7 +30,7 @@ public class MsgUtil {
      */
     public static FileTransferProtocol buildRequestTransferFile(String fileUrl, String fileName, Long fileSize) {
 
-        FileDescInfo fileDescInfo = new FileDescInfo();
+        FileDespInfo fileDescInfo = new FileDespInfo();
         fileDescInfo.setFileUrl(fileUrl);
         fileDescInfo.setFileName(fileName);
         fileDescInfo.setFileSize(fileSize);
@@ -86,7 +87,5 @@ public class MsgUtil {
         fileTransferProtocol.setTransferObj(fileBurstData);
         return fileTransferProtocol;
     }
-
-}
 
 }

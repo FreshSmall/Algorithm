@@ -7,7 +7,13 @@
 package com.netty.demo_13_4.client;
 
 import com.alibaba.fastjson.JSON;
+import com.netty.demo_13_4.dto.Constants;
+import com.netty.demo_13_4.dto.FileBurstData;
+import com.netty.demo_13_4.dto.FileBurstInstruct;
+import com.netty.demo_13_4.dto.FileTransferProtocol;
 import com.netty.demo_13_4.dto.MessageInfo;
+import com.netty.demo_13_4.util.FileUtil;
+import com.netty.demo_13_4.util.MsgUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.socket.SocketChannel;
@@ -29,15 +35,40 @@ public class NettyClientHandler extends ChannelInboundHandlerAdapter {
         System.out.println("连接开始");
         String str =
             "通知服务端链接建立成功" + ",时间:" + new Date() + ",地址:" + channel.localAddress().getHostString();
-        ctx.writeAndFlush(new MessageInfo(channel.id().toString(), str));
+        System.out.println(str);
     }
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        //接收msg消息{与上一章节相比，此处已经不需要自己进行解码}
-        System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + " 接收到消息类型：" + msg.getClass());
-        System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + " 接收到消息内容：" + JSON
-            .toJSONString(msg));
+        // 数据格式验证
+        if (!(msg instanceof FileTransferProtocol)) {
+            return;
+        }
+
+        FileTransferProtocol fileTransferProtocol = (FileTransferProtocol) msg;
+        // 0传输文件'请求'、1文件传输'指令'、2文件传输'数据'
+        switch (fileTransferProtocol.getTransferType()) {
+            case 1:
+                FileBurstInstruct fileBurstInstruct = (FileBurstInstruct) fileTransferProtocol
+                    .getTransferObj();
+                // 0:开始，1：中间，2：结尾，3：完成
+                if (Constants.FileStatus.COMPLETED == fileBurstInstruct.getStatus()) {
+                    ctx.flush();
+                    ctx.close();
+                    System.exit(-1);
+                    return;
+                }
+                FileBurstData fileBurstData = FileUtil
+                    .readFile(fileBurstInstruct.getClientFileUrl(),
+                        fileBurstInstruct.getReadPosition());
+                ctx.writeAndFlush(MsgUtil.buildTransferData(fileBurstData));
+                System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date())
+                    + "，客户端传输文件。file:" + fileBurstData.getFileName() + ",size:" + (
+                    fileBurstData.getEndPos() - fileBurstData.getBeginPos()));
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
