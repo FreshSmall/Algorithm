@@ -48,7 +48,7 @@ public class NettyClient {
                     }
                 });
 
-            f = b.connect(host, port).sync();
+            f = b.connect(host, port).syncUninterruptibly();
             System.out.println("netty client system start done");
             this.channel = f.channel();
         } catch (Exception e) {
