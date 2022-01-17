@@ -19,7 +19,7 @@ public class NettyClient {
 
 
     public static void main(String[] args) {
-        new NettyClient().connect("localhost", 8083);
+        new NettyClient().connect("localhost", 7397);
     }
 
     public void connect(String ipHost, int port) {
