@@ -16,7 +16,6 @@ public class NettyHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         System.out.println("服务端收到信息:" + msg);
-        String str = "hello,服务端返回的信息!";
         Request request = gson.fromJson((String) msg, Request.class);
         Object clazz = Class.forName(request.getInterfaceName());
         String methodName = request.getMethodName();
@@ -34,5 +33,15 @@ public class NettyHandler extends ChannelInboundHandlerAdapter {
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         System.out.println("客服端连上");
         ctx.writeAndFlush("服务连接上了");
+    }
+
+    public static void main(String[] args) throws Exception {
+        String interfaceName = "com.netty.demo_rpc.impl.HelloServiceImpl";
+        Object clazz = Class.forName(interfaceName);
+        String methodName = "sayHello";
+        Method method = clazz.getClass().getMethod(methodName, String.class);
+        Object[] arguments = new Object[]{"服务端你好"};
+        String result = (String) method.invoke(clazz, arguments);
+        System.out.println("服务端返回结果：" + result);
     }
 }
