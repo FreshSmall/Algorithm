@@ -24,6 +24,7 @@ public class NettyHandler extends ChannelInboundHandlerAdapter {
         String result = (String) method.invoke(obj, request.getArgs());
         Response response = new Response();
         response.setResult(result);
+        response.setRequestId(request.getRequestId());
         response.setCode(1);
 
         ctx.writeAndFlush(gson.toJson(response));
@@ -32,6 +33,6 @@ public class NettyHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         System.out.println("客服端连上");
-        ctx.writeAndFlush("服务连接上了");
+//        ctx.writeAndFlush("服务连接上了");
     }
 }

@@ -16,11 +16,15 @@ import io.netty.handler.codec.string.StringEncoder;
 
 import java.nio.charset.Charset;
 
-public class NettyClient {
+public class NettyClient implements Runnable {
 
+    private ChannelFuture channelFuture;
+    private String ipHost;
+    private int port;
 
-    public static void main(String[] args) {
-        new NettyClient().connect("localhost", 8083);
+    public NettyClient(String ipHost, int port) {
+        this.ipHost = ipHost;
+        this.port = port;
     }
 
     public void connect(String ipHost, int port) {
@@ -43,20 +47,41 @@ public class NettyClient {
                 });
         try {
             ChannelFuture f = b.connect(ipHost, port).sync();
-            f.channel().writeAndFlush(buildRequest());
+            this.channelFuture = f;
             f.channel().closeFuture().sync();
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         } finally {
             workGroup.shutdownGracefully();
         }
     }
 
-    private String buildRequest() {
+    private String buildRequestString() {
         Request request = new Request();
         request.setMethodName("sayHello");
         request.setInterfaceName("com.netty.demo_rpc.impl.HelloServiceImpl");
         request.setArgs(new Object[]{"服务端你好"});
         return new Gson().toJson(request);
+    }
+
+    private Request buildRequest() {
+        Request request = new Request();
+        request.setMethodName("sayHello");
+        request.setInterfaceName("com.netty.demo_rpc.impl.HelloServiceImpl");
+        request.setArgs(new Object[]{"服务端你好"});
+        return request;
+    }
+
+    public ChannelFuture getChannelFuture() {
+        return channelFuture;
+    }
+
+    public void setChannelFuture(ChannelFuture channelFuture) {
+        this.channelFuture = channelFuture;
+    }
+
+    @Override
+    public void run() {
+        connect(ipHost, port);
     }
 }
