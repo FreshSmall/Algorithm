@@ -12,7 +12,7 @@ public class ExcelDemo {
         String fileName = "/Users/bjhl/k3-test-1.xls";
         String indexStr = "XOUT0";
         String firstCode = "";
-        int firstNumber = 23308;
+        int firstNumber = 24940;
         EasyExcel.read(fileName, DemoData.class, new ReadDemoDataListener(firstNumber, firstCode, list)).sheet().doRead();
         return list;
     }

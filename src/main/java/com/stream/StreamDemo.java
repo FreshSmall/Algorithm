@@ -6,8 +6,13 @@
 
 package com.stream;
 
+import org.apache.commons.compress.utils.Lists;
+
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -76,18 +81,30 @@ public class StreamDemo {
         System.out.println(filterList);
     }
 
-    public void testMap(){
-        Map<String,String> map = new HashMap<>();
-        map.put("java","java1");
-        map.put("c#","c#1");
-        map.put("python","python1");
-        map.put("golang","golang1");
-        Optional<Map.Entry<String, String>> entry = map.entrySet().stream().filter(e -> e.getValue().equals("golang1")).findAny();
-        if (entry.isPresent()) {
-            System.out.println(entry.get().getKey());
-        }else{
-            System.out.println("返回为空");
-        }
+    public void testMap() {
+        Map<String, String> map = new HashMap<>();
+        map.put("java", "java1");
+        map.put("c#", "c#1");
+        map.put("python", "python1");
+        map.put("golang", "golang1");
+
+        Apple apple1 = new Apple(1, "java", new BigDecimal("3.25"), 10);
+        Apple apple12 = new Apple(1, "苹果2", new BigDecimal("1.35"), 20);
+        Apple apple2 = new Apple(2, "香蕉", new BigDecimal("2.89"), 30);
+        Apple apple3 = new Apple(3, "荔枝", new BigDecimal("9.99"), 40);
+
+        List<Apple> list = Lists.newArrayList();
+        list.add(apple1);
+        list.add(apple12);
+        list.add(apple2);
+        list.add(apple3);
+
+        List<Apple> updateList = list.stream().filter(e -> map.containsKey(e.getName())).map(e -> {
+            e.setNum(100);
+            return e;
+        }).collect(Collectors.toList());
+
+        System.out.println(updateList.size());
     }
 
 
