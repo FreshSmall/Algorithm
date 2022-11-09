@@ -16,22 +16,24 @@ public class DelayDemo {
     @Data
     static class DelayTask implements Delayed {
         private String name;
-        private long time;
+        private long putTime;
+        private long expireTime;
 
         public DelayTask(String name, long delayTime) {
             this.name = name;
-            this.time = System.currentTimeMillis() + delayTime;
+            this.expireTime = System.currentTimeMillis() + delayTime;
+            this.putTime = System.currentTimeMillis();
         }
 
         @Override
         public long getDelay(@NotNull TimeUnit unit) {
-            long diff = this.time - System.currentTimeMillis();
+            long diff = this.expireTime - System.currentTimeMillis();
             return unit.convert(diff, TimeUnit.MILLISECONDS);
         }
 
         @Override
         public int compareTo(@NotNull Delayed o) {
-            return Ints.saturatedCast(this.time - ((DelayTask) o).getTime());
+            return Ints.saturatedCast(this.expireTime - ((DelayTask) o).expireTime);
         }
     }
 
@@ -45,10 +47,10 @@ public class DelayDemo {
 
         @Override
         public void run() {
-            for (int i = 0; i < 10; i++) {
+            for (int i = 0; i < 1000; i++) {
                 try {
-                    DelayTask task = new DelayTask("延迟任务" + (i + 1), 5000);
-                    System.out.println("Put object: " +task.toString()+",put 时间="+System.currentTimeMillis());
+                    DelayTask task = new DelayTask("延迟任务" + (i + 1), 1000*60*5);
+                    System.out.println("Put object: " + task.toString() + ",put 时间=" + System.currentTimeMillis());
                     queue.put(task);
                     Thread.sleep(500);
                 } catch (InterruptedException e) {
@@ -69,10 +71,11 @@ public class DelayDemo {
         @Override
         public void run() {
 
-            for (int i = 0; i < 10; i++) {
+            while (true) {
                 try {
                     DelayTask task = queue.take();
-                    System.out.println("taskInfo:" + task+"get 时间="+System.currentTimeMillis());
+                    long getTime = System.currentTimeMillis();
+                    System.out.println("taskInfo:" + task + "get 时间=" + getTime + ",延迟时间：" + (getTime - task.getPutTime()));
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -89,7 +92,7 @@ public class DelayDemo {
         service.submit(producer);
         service.submit(consumer);
 
-        service.awaitTermination(5,TimeUnit.MINUTES);
+        service.awaitTermination(1000, TimeUnit.MINUTES);
         service.shutdown();
 
     }
