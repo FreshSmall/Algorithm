@@ -1,14 +1,7 @@
 package com.netty.demo_13_11.server;
 
-import com.sun.xml.internal.messaging.saaj.util.ByteInputStream;
 import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelOutboundHandlerAdapter;
-import io.netty.channel.ChannelProgressiveFuture;
-import io.netty.channel.ChannelProgressiveFutureListener;
-import io.netty.channel.ChannelProgressivePromise;
-import io.netty.channel.ChannelPromise;
-import io.netty.handler.stream.ChunkedStream;
+import io.netty.channel.*;
 import io.netty.util.ReferenceCountUtil;
 
 public class MyServerChunkHandler extends ChannelOutboundHandlerAdapter {
@@ -24,10 +17,10 @@ public class MyServerChunkHandler extends ChannelOutboundHandlerAdapter {
         ByteBuf buf = (ByteBuf) msg;
         byte[] data = this.getData(buf);
         //写入流中
-        ByteInputStream in = new ByteInputStream();
-        in.setBuf(data);
+//        ByteInputStream in = new ByteInputStream();
+//        in.setBuf(data);
         //消息分块；10个字节，测试过程中可以调整
-        ChunkedStream stream = new ChunkedStream(in, 10);
+//        ChunkedStream stream = new ChunkedStream(in, 10);
         ChannelProgressivePromise channelProgressivePromise = ctx.channel().newProgressivePromise();
         channelProgressivePromise.addListener(new ChannelProgressiveFutureListener() {
             @Override
@@ -47,7 +40,7 @@ public class MyServerChunkHandler extends ChannelOutboundHandlerAdapter {
             }
         });
         ReferenceCountUtil.release(msg);
-        ctx.writeAndFlush(stream, channelProgressivePromise);
+//        ctx.writeAndFlush(stream, channelProgressivePromise);
     }
 
     /**
