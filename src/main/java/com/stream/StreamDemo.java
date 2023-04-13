@@ -6,6 +6,7 @@
 
 package com.stream;
 
+import com.google.common.collect.Sets;
 import org.apache.commons.compress.utils.Lists;
 
 import java.math.BigDecimal;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -99,20 +101,18 @@ public class StreamDemo {
         list.add(apple2);
         list.add(apple3);
 
-        List<Apple> updateList = list.stream().filter(e -> map.containsKey(e.getName())).map(e -> {
-            e.setNum(100);
-            return e;
-        }).collect(Collectors.toList());
+        List<Apple> updateList = list.stream().filter(e -> map.containsKey(e.getName())).peek(e -> e.setNum(100)).collect(Collectors.toList());
 
-        System.out.println(updateList.size());
+        System.out.println(updateList);
     }
 
 
     public static void main(String[] args) {
-        /*init();
-        StreamDemo demo = new StreamDemo();
-        demo.testListFilter();*/
-        StreamDemo demo = new StreamDemo();
-        demo.testMap();
+        Set<String> set1 = Sets.newHashSet("1","2","3");
+        Set<String> set2 = Sets.newHashSet("4","2","3","5");
+        Set<String> set3 = Sets.difference(set1,set2);
+        Set<String> set4 = Sets.difference(set2,set1);
+        System.out.println(set3);
+        System.out.println(set4);
     }
 }

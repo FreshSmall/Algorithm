@@ -1,7 +1,5 @@
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Main {
 
@@ -57,7 +55,6 @@ public class Main {
         list.add("a");
         list.add("b");
         list.add("c");
-        list.add("d");
 
         List<String> list2 = new ArrayList<>();
         list2.add("b");
@@ -65,15 +62,8 @@ public class Main {
         list2.add("c");
         list2.add("d");
 
-        List<String> list3 = list2.stream().collect(Collectors.toList());
-
-        list3.retainAll(list);
-        list.removeAll(list3);
-        list2.removeAll(list3);
-
-        System.out.println(list.toString());
-        System.out.println(list2.toString());
-        System.out.println(list3.toString());
+        list2.retainAll(list);
+        System.out.println(list2);
 
     }
 }
