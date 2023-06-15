@@ -6,15 +6,6 @@
 
 package com.javaagent;
 
-import com.sun.tools.attach.AgentInitializationException;
-import com.sun.tools.attach.AgentLoadException;
-import com.sun.tools.attach.AttachNotSupportedException;
-import com.sun.tools.attach.VirtualMachine;
-import com.sun.tools.attach.VirtualMachineDescriptor;
-
-import java.io.IOException;
-import java.util.List;
-
 /**
  * @author yinchao
  * @description
@@ -23,7 +14,7 @@ import java.util.List;
  **/
 public class JVMTIThread {
 
-    public static void main(String[] args)
+    /*public static void main(String[] args)
         throws IOException, AttachNotSupportedException, AgentLoadException, AgentInitializationException {
         List<VirtualMachineDescriptor> list = VirtualMachine.list();
         for (VirtualMachineDescriptor vmd : list) {
@@ -35,6 +26,6 @@ public class JVMTIThread {
 
             }
         }
-    }
+    }*/
 
 }
