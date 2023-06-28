@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-package com.netty.demo6;
+package com.netty.demo6_mysql;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -14,8 +14,6 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.codec.string.StringDecoder;
-import io.netty.handler.codec.string.StringEncoder;
 
 /**
  * @author yinchao
@@ -31,20 +29,18 @@ public class NettyServer {
         EventLoopGroup workerGroup = new NioEventLoopGroup();
 
         ServerBootstrap b = new ServerBootstrap();
-        b.group(boosGroup, workerGroup)
-            .channel(NioServerSocketChannel.class)
-            .option(ChannelOption.SO_BACKLOG, 1024)
-            .childHandler(new ChannelInitializer<SocketChannel>() {
-                @Override
-                protected void initChannel(SocketChannel socketChannel) throws Exception {
-                    System.out.println(Thread.currentThread().getName() + ",服务器初始化通道.....");
-                    // 解码
-                    socketChannel.pipeline().addLast(new StringDecoder());
-                    // 编码
-                    socketChannel.pipeline().addLast(new StringEncoder());
-                    socketChannel.pipeline().addLast(new MyServerHandler());
-                }
-            });
+        b.group(boosGroup, workerGroup).channel(NioServerSocketChannel.class).option(ChannelOption.SO_BACKLOG, 1024).childHandler(new ChannelInitializer<SocketChannel>() {
+            @Override
+            protected void initChannel(SocketChannel socketChannel) throws Exception {
+                System.out.println(Thread.currentThread().getName() + ",服务器初始化通道.....");
+                //socketChannel.pipeline().addLast(new MySqlPacketDecoder());
+                // 解码
+                //socketChannel.pipeline().addLast(new StringDecoder());
+                // 编码
+                //socketChannel.pipeline().addLast(new StringEncoder());
+                socketChannel.pipeline().addLast(new MyServerHandler());
+            }
+        });
 
         try {
             //绑定端口等待同步成功
@@ -62,7 +58,7 @@ public class NettyServer {
     }
 
     public static void main(String[] args) {
-        int port = 8083;
+        int port = 8090;
         new NettyServer().bind(port);
     }
 

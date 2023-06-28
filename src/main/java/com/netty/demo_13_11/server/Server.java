@@ -17,7 +17,7 @@ import java.nio.charset.Charset;
 
 public class Server {
     public static void main(String[] args) {
-        new Server().bing(7397);
+        new Server().bing(8090);
     }
 
     private void bing(int port) {
