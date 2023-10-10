@@ -1,5 +1,5 @@
-import java.util.ArrayList;
-import java.util.List;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 
 public class Main {
 
@@ -51,19 +51,44 @@ public class Main {
 //        d.join();
 //        System.out.println("Hello World!");
 
-        List<String> list = new ArrayList<>();
-        list.add("a");
-        list.add("b");
-        list.add("c");
+//        List<String> list = new ArrayList<>();
+//        list.add("a");
+//        list.add("b");
+//        list.add("c");
+//
+//        List<String> list2 = new ArrayList<>();
+//        list2.add("b");
+//        list2.add("a");
+//        list2.add("c");
+//        list2.add("d");
+//
+//        list2.retainAll(list);
+//        System.out.println(list2);
 
-        List<String> list2 = new ArrayList<>();
-        list2.add("b");
-        list2.add("a");
-        list2.add("c");
-        list2.add("d");
+        double d = 0.0019;
+        System.out.println(formatDecimal1(d));
+        System.out.println(formatDecimal2(d));
+        System.out.println(formatDecimal3(d));
+        System.out.println(formatDecimal4(d));
 
-        list2.retainAll(list);
-        System.out.println(list2);
+    }
 
+    public static String formatDecimal1(double d) {
+        DecimalFormat df = new DecimalFormat("0.00");
+        return df.format(d);
+    }
+
+    public static String formatDecimal2(double d) {
+        DecimalFormat df = new DecimalFormat("#.##");
+        return df.format(d);
+    }
+    public static String formatDecimal3(double d){
+        return String.format("%.2f",d);
+    }
+
+    public static double formatDecimal4(double d){
+        BigDecimal bd=new BigDecimal(d);
+        double d1=bd.setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
+        return d1;
     }
 }

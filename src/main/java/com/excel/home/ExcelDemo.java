@@ -2,6 +2,8 @@ package com.excel.home;
 
 import com.alibaba.excel.EasyExcel;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +20,7 @@ public class ExcelDemo {
     }
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
         ExcelDemo demo = new ExcelDemo();
         List<DemoData> list = demo.read();
         // 写入文件生成新文件
@@ -26,6 +28,7 @@ public class ExcelDemo {
         EasyExcel.write(newFileName, DemoData.class)
                 .sheet("模板")
                 .doWrite(list);
+        FileOutputStream stream = new FileOutputStream(newFileName);
     }
 
 }
