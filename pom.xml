@@ -153,11 +153,11 @@
             <version>1.2.18</version>
         </dependency>
 
-        <dependency>
+       <!-- <dependency>
             <groupId>com.github.almasb</groupId>
             <artifactId>fxgl</artifactId>
             <version>17.2</version>
-        </dependency>
+        </dependency>-->
 
         <dependency>
             <groupId>com.jayway.jsonpath</groupId>

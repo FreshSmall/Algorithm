@@ -1,5 +1,8 @@
 package com.threadlocal;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 /**
  * @author: yinchao
  * @ClassName: ThreadLocalDemo
@@ -10,22 +13,34 @@ package com.threadlocal;
 public class ThreadLocalDemo {
 
 
+    private static void threadLocalTest() {
+        ThreadLocal<String> threadLocal = new ThreadLocal<>();
+        threadLocal.set("java");
+        System.out.println(threadLocal.get());
+        new Thread(() -> System.out.println(threadLocal.get())).start();
+    }
+
+    private static void inheritableThreadLocalTest() {
+        ThreadLocal<String> threadLocal = new InheritableThreadLocal<>();
+        threadLocal.set("java");
+        System.out.println(threadLocal.get());
+        new Thread(() -> System.out.println(threadLocal.get())).start();
+    }
+
+    private static void inheritableThreadLocalPoolTest() {
+        ThreadLocal<String> threadLocal = new InheritableThreadLocal<>();
+        threadLocal.set("java");
+        System.out.println(threadLocal.get());
+        // 使用线程池
+        ExecutorService executorService = Executors.newFixedThreadPool(1);
+        executorService.execute(() -> System.out.println(threadLocal.get()));
+    }
+
+
     public static void main(String[] args) {
-
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                ThreadLocal<String> threadLocal = new ThreadLocal<>();
-                threadLocal.set("java");
-                threadLocal.set("c++");
-                System.out.println(threadLocal.get());
-            }
-        }).start();
-
-        while (true) {
-
-        }
+//        threadLocalTest();
+//        inheritableThreadLocalTest();
+        inheritableThreadLocalPoolTest();
     }
 
 }
