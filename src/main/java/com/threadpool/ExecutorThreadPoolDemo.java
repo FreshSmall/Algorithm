@@ -5,7 +5,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 /**
@@ -32,7 +31,7 @@ public class ExecutorThreadPoolDemo {
 
             @Override
             public String call() throws Exception {
-                Thread.sleep(2000);
+                Thread.sleep(20000);
                 return Thread.currentThread().getName();
             }
         });
@@ -42,11 +41,9 @@ public class ExecutorThreadPoolDemo {
         System.out.println(submit.get());
     }
 
-    public static void main(String[] args)
-        throws ExecutionException, InterruptedException, TimeoutException {
+    public static void main(String[] args) throws ExecutionException, InterruptedException, TimeoutException {
         ExecutorThreadPoolDemo demo = new ExecutorThreadPoolDemo();
         // demo.test_newFixedThreadPool();
         demo.test_Future();
     }
-
 }
