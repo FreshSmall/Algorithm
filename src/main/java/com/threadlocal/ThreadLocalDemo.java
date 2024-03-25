@@ -36,7 +36,6 @@ public class ThreadLocalDemo {
         executorService.execute(() -> System.out.println(threadLocal.get()));
     }
 
-
     public static void main(String[] args) {
 //        threadLocalTest();
 //        inheritableThreadLocalTest();
