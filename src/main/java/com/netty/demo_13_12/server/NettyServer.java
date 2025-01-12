@@ -45,6 +45,9 @@ public class NettyServer {
                         channel.pipeline().addLast(new StringEncoder(Charset.forName("GBK")));
                         // 在管道中添加我们自己的接收数据实现方法
                         channel.pipeline().addLast(new MyServerHandler());
+                        channel.closeFuture().addListener(future -> {
+                            log.info("channel close future: {}", future);
+                        });
                     }
                 });
         try {
