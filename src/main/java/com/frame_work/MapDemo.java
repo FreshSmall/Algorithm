@@ -90,6 +90,28 @@ public class MapDemo {
         }
     }
 
+    public void testMapCompute(){
+        Map<String, String> map = new HashMap<>();
+        map.put("1", "1");
+        map.put("2", "2");
+        map.put("3", "3");
+
+        // 使用compute方法更新或添加键值对
+        map.compute("2", (key, value) -> {
+            if (value == null) {
+                return "2 added";
+            } else {
+                return value + " updated";
+            }
+        });
+        map.computeIfAbsent("4", key -> "4 added");
+
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            System.out.print(entry.getKey() + "===");
+            System.out.println(entry.getValue());
+        }
+    }
+
 
     static final int hash(Object key) {
         int h;
@@ -98,9 +120,7 @@ public class MapDemo {
 
     public static void main(String[] args) {
         MapDemo mapDemo = new MapDemo();
-        mapDemo.testConcurrentSkipListMap();
-
-        mapDemo.testConcurrentSkipListMap();
+        mapDemo.testMapCompute();
     }
 
     class LRU<K, V> extends LinkedHashMap<K, V> {
